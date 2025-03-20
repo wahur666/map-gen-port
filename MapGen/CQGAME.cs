@@ -166,13 +166,13 @@ public class OPTIONS
 
 public class CQGAME : OPTIONS
 {
-    const int PLAYERNAMESIZE = 34; // enough to hold 32 characters plus null
-    const int MAPNAMESIZE = 128;
-    const int MAX_PLAYERS = 8;
+    protected const int PLAYERNAMESIZE = 34; // enough to hold 32 characters plus null
+    protected const int MAPNAMESIZE = 128;
+    protected const int MAX_PLAYERS = 8;
 
-    U32 activeSlots = 1; // valid from 1 to MAX_PLAYERS
-    bool bHostBusy = false; // host is not on the final screen
-    bool startCountdown = false;
+    U32 activeSlots = 1; // valid from 1 to MAX_PLAYERS // 		U32 activeSlots:8;		
+    bool bHostBusy = false; // host is not on the final screen // 		U32 bHostBusy:1
+    bool startCountdown = false; // 		U32 startCountdown:4;	
 
     SLOT[] slot = new SLOT[MAX_PLAYERS];
 }

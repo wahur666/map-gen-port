@@ -5,7 +5,7 @@ using U32 = UInt32;
 using DPID = UInt32;
 using S32 = Int32;
 
-enum DIFFICULTY
+public enum DIFFICULTY
 {
     NODIFFICULTY,
     EASY,
@@ -13,13 +13,13 @@ enum DIFFICULTY
     HARD
 }
 
-enum TYPE
+public enum TYPE
 {
     HUMAN,
     COMPUTER
 }
 
-enum COMP_CHALANGE
+public enum COMP_CHALANGE
 {
     EASY_CH,
     AVERAGE_CH,
@@ -28,7 +28,7 @@ enum COMP_CHALANGE
     NIGHTMARE_CH,
 }
 
-enum STATE
+public enum STATE
 {
     OPEN, // slot can be used, but not active at this time
     CLOSED, // host has disallowed this slot
@@ -36,7 +36,7 @@ enum STATE
     READY // slot is active and player has accepted rules
 }
 
-enum RACE
+public enum RACE
 {
     NORACE,
     TERRAN,
@@ -45,7 +45,7 @@ enum RACE
     VYRIUM,
 }
 
-enum COLOR
+public enum COLOR
 {
     UNDEFINEDCOLOR, // used for computer players
     YELLOW,
@@ -58,7 +58,7 @@ enum COLOR
     AQUA
 }
 
-enum TEAM
+public enum TEAM
 {
     NOTEAM,
     _1,
@@ -67,19 +67,19 @@ enum TEAM
     _4
 }
 
-struct SLOT
+public struct SLOT
 {
-    TYPE type;
-    COMP_CHALANGE compChalange;
-    STATE state;
-    RACE race;
-    COLOR color;
-    TEAM team;
-    U32 zoneSeat;
-    DPID dpid; // id of player, 0 if computer player
+    public TYPE type;
+    public COMP_CHALANGE compChalange;
+    public STATE state;
+    public RACE race;
+    public COLOR color;
+    public TEAM team;
+    public U32 zoneSeat;
+    public DPID dpid; // id of player, 0 if computer player
 }
 
-enum GAMETYPE // need 2 bits
+public enum GAMETYPE // need 2 bits
 {
     KILL_UNITS = -2,
     KILL_HQ_PLATS,
@@ -87,49 +87,49 @@ enum GAMETYPE // need 2 bits
     KILL_PLATS_FABS
 }
 
-enum MONEY // need 2 bits
+public enum MONEY // need 2 bits
 {
     LOW_MONEY = -2,
     MEDIUM_MONEY,
     HIGH_MONEY
 }
 
-enum MAPTYPE // need 2 bits
+public enum MAPTYPE // need 2 bits
 {
     SELECTED_MAP = -2,
     USER_MAP, // from saved game dir
     RANDOM_MAP
 }
 
-enum MAPSIZE // need 2 bits
+public enum MAPSIZE // need 2 bits
 {
     SMALL_MAP = -2,
     MEDIUM_MAP,
     LARGE_MAP
 }
 
-enum TERRAIN // need 2 bits
+public enum TERRAIN // need 2 bits
 {
     LIGHT_TERRAIN = -2,
     MEDIUM_TERRAIN,
     HEAVY_TERRAIN
 }
 
-enum STARTING_UNITS // need 2 bits
+public enum STARTING_UNITS // need 2 bits
 {
     UNITS_MINIMAL = -2,
     UNITS_MEDIUM,
     UNITS_LARGE
 }
 
-enum VISIBILITYMODE // need 2 bits
+public enum VISIBILITYMODE // need 2 bits
 {
     VISIBILITY_NORMAL = -1,
     VISIBILITY_EXPLORED,
     VISIBILITY_ALL
 }
 
-enum RANDOM_TEMPLATE //need 2 bits
+public enum RANDOM_TEMPLATE //need 2 bits
 {
     TEMPLATE_NEW_RANDOM = -2,
     TEMPLATE_RANDOM,
@@ -137,7 +137,7 @@ enum RANDOM_TEMPLATE //need 2 bits
     TEMPLATE_STAR,
 }
 
-enum COMMANDLIMIT // need 2 bits
+public enum COMMANDLIMIT // need 2 bits
 {
     COMMAND_LOW = -2,
     COMMAND_NORMAL,
@@ -147,32 +147,32 @@ enum COMMANDLIMIT // need 2 bits
 
 public class OPTIONS
 {
-    U32 version = 1;
-    GAMETYPE gameType = GAMETYPE.KILL_HQ_PLATS;
-    S32 gameSpeed = 1; // need enough bits for -16 to 15
-    bool regenOn = false;
-    bool spectatorsOn = false;
-    bool lockDiplomacyOn = false;
-    U32 numSystems;
-    MONEY money;
-    MAPTYPE mapType;
-    RANDOM_TEMPLATE templateType;
-    MAPSIZE mapSize;
-    TERRAIN terrain;
-    STARTING_UNITS units;
-    VISIBILITYMODE visibility;
-    COMMANDLIMIT commandLimit;
+    public  U32 version = 1;
+    public  GAMETYPE gameType = GAMETYPE.KILL_HQ_PLATS;
+    public  S32 gameSpeed = 1; // need enough bits for -16 to 15
+    public  bool regenOn = false;
+    public  bool spectatorsOn = false;
+    public  bool lockDiplomacyOn = false;
+    public  U32 numSystems;
+    public  MONEY money;
+    public  MAPTYPE mapType;
+    public  RANDOM_TEMPLATE templateType;
+    public  MAPSIZE mapSize;
+    public  TERRAIN terrain;
+    public  STARTING_UNITS units;
+    public  VISIBILITYMODE visibility;
+    public  COMMANDLIMIT commandLimit;
 }
 
 public class CQGAME : OPTIONS
 {
-    protected const int PLAYERNAMESIZE = 34; // enough to hold 32 characters plus null
-    protected const int MAPNAMESIZE = 128;
-    protected const int MAX_PLAYERS = 8;
+    public const int PLAYERNAMESIZE = 34; // enough to hold 32 characters plus null
+    public const int MAPNAMESIZE = 128;
+    public static readonly int MAX_PLAYERS = 8;
 
-    U32 activeSlots = 1; // valid from 1 to MAX_PLAYERS // 		U32 activeSlots:8;		
-    bool bHostBusy = false; // host is not on the final screen // 		U32 bHostBusy:1
-    bool startCountdown = false; // 		U32 startCountdown:4;	
+    public U32 activeSlots = 1; // valid from 1 to MAX_PLAYERS // 		U32 activeSlots:8;		
+    public bool bHostBusy = false; // host is not on the final screen // 		U32 bHostBusy:1
+    public bool startCountdown = false; // 		U32 startCountdown:4;	
 
-    SLOT[] slot = new SLOT[MAX_PLAYERS];
+    public SLOT[] slot = new SLOT[MAX_PLAYERS];
 }

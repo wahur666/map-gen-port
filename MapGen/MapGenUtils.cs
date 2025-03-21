@@ -91,18 +91,18 @@ public static class MapGenUtils {
 
 		public U32[] distToSystems = new U32[MAX_SYSTEMS];
 
-		GenJumpgate[] jumpgates = new GenJumpgate[MAX_SYSTEMS];
+		public GenJumpgate[] jumpgates = new GenJumpgate[MAX_SYSTEMS];
 		public U32 systemID = 0;
 		public U32 playerID = 0;
 		public U32 connectionOrder = 0;
-		public U32[,] playerDistToSystems = new U32[MAX_PLAYERS,MAX_SYSTEMS];
+		public U32[,] playerDistToSystems = new U32[MAX_PLAYERS, MAX_SYSTEMS];
 		public _terrainTheme theme;
 
 		public U32 omStartEmpty = 0;
 		public U32 omUsed = 0;
-		public U8[,] objectMap = new U8[MAX_MAP_GRID,MAX_MAP_GRID];
+		public U8[,] objectMap = new U8[MAX_MAP_GRID, MAX_MAP_GRID];
 
-		void initObjectMap() {
+		public void initObjectMap() {
 			omUsed = 0;
 			omStartEmpty = 0;
 			S32 centerDist = (S32)(size / 2);
@@ -113,52 +113,52 @@ public static class MapGenUtils {
 				for (S32 j = 0; j < (S32)size; ++j) {
 					S32 dist = (i - centerDist) * (i - centerDist) + (j - centerDist) * (j - centerDist);
 					if (dist >= centerDist2) {
-						objectMap[i,j] = GENMAP_TAKEN;
+						objectMap[i, j] = GENMAP_TAKEN;
 					} else if (dist >= centerBoarder2) {
-						objectMap[i,j] = GENMAP_LEVEL1;
+						objectMap[i, j] = GENMAP_LEVEL1;
 					} else {
 						++omStartEmpty;
-						objectMap[i,j] = 0;
+						objectMap[i, j] = 0;
 					}
 				}
 			}
 		}
 	}
 
-	struct GenJumpgate {
-		GenSystem system1;
-		GenSystem system2;
+	public struct GenJumpgate() {
+		public GenSystem system1 = new();
+		public GenSystem system2 = new();
 
-		U32 x1;
-		U32	y1;
-		U32	x2;
-		U32	y2;
+		public U32 x1 = 0;
+		public U32 y1 = 0;
+		public U32 x2 = 0;
+		public U32 y2 = 0;
 
-		U32 dist;
-		bool created; // 1 BIT
+		public U32 dist = 0;
+		bool created = false; // 1 BIT
 	};
 
-	struct GenStruct() {
-		BT_MAP_GEN data;
+	public struct GenStruct() {
+		public BT_MAP_GEN data = new();
 
-		U32 numPlayers;
+		public U32 numPlayers = 0;
 
-		U32 sectorSize;
-		U32[] sectorGrid = new U32[17]; //17 hight, use a shift to get the width.
+		public U32 sectorSize = 0;
+		public U32[] sectorGrid = new U32[17]; //17 hight, use a shift to get the width.
 
-		U32 gameSize;
-		DMapGen.SECTOR_FORMATION sectorLayout;
+		public U32 gameSize = 0;
+		public DMapGen.SECTOR_FORMATION sectorLayout = DMapGen.SECTOR_FORMATION.SF_RANDOM;
 
-		U32 systemsToMake;
+		public U32 systemsToMake = 0;
 
-		U8 terrainSize;
+		public U8 terrainSize = 0;
 
-		S32 objectBoarder;
+		public S32 objectBoarder = 0;
 
-		GenSystem[] systems = new GenSystem[MAX_SYSTEMS];
-		U32 systemCount;
+		public GenSystem[] systems = new GenSystem[MAX_SYSTEMS];
+		public U32 systemCount = 0;
 
-		GenJumpgate[] jumpgate = new GenJumpgate[MAX_SYSTEMS * MAX_SYSTEMS];
-		U32 numJumpGates;
+		public GenJumpgate[] jumpgate = new GenJumpgate[MAX_SYSTEMS * MAX_SYSTEMS];
+		public U32 numJumpGates = 0;
 	};
 }

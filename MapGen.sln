@@ -2,10 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapGen", "MapGen\MapGen.csproj", "{CC8C4880-3D09-4AF3-A854-671C24497F57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DACOM", "DACOM\DACOM.csproj", "{61D0247D-DCA6-425F-8545-63B70878A7CC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DOSFile", "DOSFile\DOSFile.csproj", "{B252363C-524B-48C8-81BB-1E9824C4946E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -16,13 +12,5 @@ Global
 		{CC8C4880-3D09-4AF3-A854-671C24497F57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC8C4880-3D09-4AF3-A854-671C24497F57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC8C4880-3D09-4AF3-A854-671C24497F57}.Release|Any CPU.Build.0 = Release|Any CPU
-		{61D0247D-DCA6-425F-8545-63B70878A7CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{61D0247D-DCA6-425F-8545-63B70878A7CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{61D0247D-DCA6-425F-8545-63B70878A7CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{61D0247D-DCA6-425F-8545-63B70878A7CC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B252363C-524B-48C8-81BB-1E9824C4946E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B252363C-524B-48C8-81BB-1E9824C4946E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B252363C-524B-48C8-81BB-1E9824C4946E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B252363C-524B-48C8-81BB-1E9824C4946E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -68,13 +68,13 @@ public static class MapGenUtils {
 	public static readonly int FLAG_PATHON = 0x02;
 	public static readonly int MAX_FLAGS = 20;
 
-	public struct FlagPost() {
+	public class FlagPost() {
 		public U8 type = 0;
 		public U8 xPos = 0;
 		public U8 yPos = 0;
 	};
 
-	public struct GenSystem() {
+	public class GenSystem() {
 		public FlagPost[] flags = new FlagPost[MAX_FLAGS];
 		public U32 numFlags = 0;
 
@@ -125,7 +125,7 @@ public static class MapGenUtils {
 		}
 	}
 
-	public struct GenJumpgate() {
+	public class GenJumpgate() {
 		public GenSystem system1 = new();
 		public GenSystem system2 = new();
 
@@ -138,7 +138,7 @@ public static class MapGenUtils {
 		bool created = false; // 1 BIT
 	};
 
-	public struct GenStruct() {
+	public class GenStruct() {
 		public BT_MAP_GEN data = new();
 
 		public U32 numPlayers = 0;

@@ -1,13 +1,14 @@
 ﻿using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 
 namespace MapGen;
 
 using U32 = UInt32;
 using SINGLE = float;
 
-public struct _terrainInfo() {
+public class _terrainInfo() {
 	const int GT_PATH = 32;
-	byte[] terrainArchType = new byte[GT_PATH];
+	string terrainArchType = "";
 	SINGLE probability = 0f;
 	U32 minToPlace = 0;
 	U32 maxToPlace = 0;
@@ -18,32 +19,32 @@ public struct _terrainInfo() {
 	DMapGen.PLACEMENT placement = DMapGen.PLACEMENT.RANDOM;
 }
 
-[StructLayout(LayoutKind.Explicit)]
-public struct _info {
-	[FieldOffset(0)] public _terrainInfo terrainInfo;
-	[FieldOffset(0)] public DMapGen.OVERLAP overlap;
+[JsonConverter(typeof(BT_MAP_GEN_InfoConverter))]
+public class _info() {
+	public DMapGen.OVERLAP? overlap = null;
+	public _terrainInfo? terrainInfo = null;
 }
 
-public struct _macros() {
+public class _macros() {
 	public DMapGen.MACRO_OPERATION operation = DMapGen.MACRO_OPERATION.MC_PLACE_HABITABLE_PLANET;
 	public U32 range = 0;
 	public bool active = false;
-	public _info info;
+	public _info info = default;
 }
 
-public struct _terrainTheme() {
-	public static readonly int MAX_TERRAIN = 20;
-	public static readonly int MAX_TYPES = 6;
-	public static readonly int MAX_MACROS = 15;
-	public static readonly int GT_PATH = 32;
-	public byte systemKit = 0;
+public class _terrainTheme() {
+	public const int MAX_TERRAIN = 20;
+	public const int MAX_TYPES = 6;
+	public const int MAX_MACROS = 15;
+	public const int GT_PATH = 32;
+	public string[] systemKit = new string[MAX_TYPES];
 
-	public byte[,] metalPlanets = new byte[MAX_TYPES, GT_PATH];
-	public byte[,] gasPlanets = new byte[MAX_TYPES,GT_PATH];
-	public byte[,] habitablePlanets = new byte[MAX_TYPES,GT_PATH];
-	public byte[,] otherPlanets = new byte[MAX_TYPES,GT_PATH];
+	public string[] metalPlanets = new string[MAX_TYPES];
+	public string[] gasPlanets = new string[MAX_TYPES];
+	public string[] habitablePlanets = new string[MAX_TYPES];
+	public string[] otherPlanets = new string[MAX_TYPES];
 
-	public byte[,] moonTypes = new byte[MAX_TYPES,GT_PATH];
+	// public byte[,] moonTypes = new byte[MAX_TYPES,GT_PATH];
 
 	public DMapGen.SECTOR_SIZE sizeOk = DMapGen.SECTOR_SIZE.SMALL_SIZE; //dependant on size setting
 	public U32 minSize = 0;
@@ -67,11 +68,11 @@ public struct _terrainTheme() {
 	public _terrainInfo[] nuggetGasTypes = new _terrainInfo[MAX_TYPES];
 	public bool okForPlayerStart = false;
 	public bool okForRemoteSystem = false;
-	public SINGLE[] desitiy = new SINGLE[3]; //dependant on terrain setting
+	public SINGLE[] density = new SINGLE[3]; //dependant on terrain setting
 	public _macros[] macros = new _macros[MAX_MACROS];
 }
 
 public class BT_MAP_GEN {
-	public static readonly int MAX_THEMES = 30;
+	public const int MAX_THEMES = 30;
 	public _terrainTheme[] themes = new _terrainTheme[MAX_THEMES];
 }

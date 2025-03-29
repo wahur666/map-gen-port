@@ -131,6 +131,9 @@ public enum VISIBILITYMODE // need 2 bits
 
 public enum RANDOM_TEMPLATE //need 2 bits
 {
+	/// <summary>
+	/// Pure random
+	/// </summary>
     TEMPLATE_NEW_RANDOM = -2,
     TEMPLATE_RANDOM,
     TEMPLATE_RING,

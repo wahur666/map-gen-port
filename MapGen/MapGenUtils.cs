@@ -10,10 +10,10 @@ public static class MapGenUtils {
 	public static readonly float PLANETSIZE = GRIDSIZE * 2.0f;
 	public static readonly int MAX_MAP_GRID = 64;
 	public static readonly int MAX_MAP_SIZE = MAX_MAP_GRID * GRIDSIZE;
-	public static readonly int RND_MAX_PLAYER_SYSTEMS = 8;
+	public static readonly U32 RND_MAX_PLAYER_SYSTEMS = 8;
 	public static readonly U32[] rndPlayerX = { 0, 2, 5, 8, 9, 7, 4, 1 };
 	public static readonly U32[] rndPlayerY = { 4, 1, 0, 2, 5, 8, 9, 7 };
-	public static readonly int RND_MAX_REMOTE_SYSTEMS = 20;
+	public static readonly uint RND_MAX_REMOTE_SYSTEMS = 20;
 	public static readonly U32[] rndRemoteX = { 4, 6, 1, 3, 5, 7, 2, 4, 6, 8, 1, 3, 5, 7, 2, 4, 6, 8, 3, 5 };
 	public static readonly U32[] rndRemoteY = { 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7 };
 	public static readonly int RING_MAX_SYSTEMS = 16;
@@ -35,8 +35,13 @@ public static class MapGenUtils {
 	//the random numbers caqn be understood to be in fixed 15 floating point.
 	public static readonly int FIX15 = 15;
 
-	private static Random rand = new();
+	private static Random rand = null;
 
+	public static void InitializeRandom(int seed) {
+		rand = new Random(seed);
+		Console.WriteLine($"MAP GENERATION SEED = {seed}");
+	}
+	
 	private static U32 linearFunc() {
 		return (U32)rand.Next(0, short.MaxValue + 1);
 	}
@@ -96,7 +101,7 @@ public static class MapGenUtils {
 		public U32 playerID = 0;
 		public U32 connectionOrder = 0;
 		public U32[,] playerDistToSystems = new U32[MAX_PLAYERS, MAX_SYSTEMS];
-		public _terrainTheme theme;
+		public _terrainTheme theme = new ();
 
 		public U32 omStartEmpty = 0;
 		public U32 omUsed = 0;

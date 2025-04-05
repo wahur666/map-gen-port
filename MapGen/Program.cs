@@ -28,6 +28,25 @@ class Program {
 		    throw new Exception("BT_MAP_GEN failed to load");
 	    }
 
+	    var allArchiypes = mapgen.themes
+		    .SelectMany(x => x.terrain.Select(y => y.terrainArchType))
+		    .Where(x => x != "")
+		    .Distinct()
+		    .ToList();
+
+	    List<BASE_FIELD_DATA> baseFieldData = [
+			new BASE_FIELD_DATA("Field!!AsteroidsHeavy", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
+			new BASE_FIELD_DATA("Field!!AsteroidsMed", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
+			new BASE_FIELD_DATA("Field!!AsteroidsLight", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
+			new BASE_FIELD_DATA("Nebula!!Ion(solarian)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new BASE_FIELD_DATA("Nebula!!Helious(terran)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new BASE_FIELD_DATA("Nebula!!Celsius(terran)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new BASE_FIELD_DATA("Nebula!!Hyades(mantis)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new BASE_FIELD_DATA("Nebula!!Cygnus(solarian)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new BASE_FIELD_DATA("Nebula!!Lithium(mantis)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new BASE_FIELD_DATA("Field!!Debris", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
+	    ];
+	    
 	    FULLCQGAME fullcqgame = new FULLCQGAME();
 	    fullcqgame.activeSlots = 3;
 	    
@@ -67,7 +86,7 @@ class Program {
 	    fullcqgame.mapType = MAPTYPE.RANDOM_MAP;
 	    fullcqgame.templateType = RANDOM_TEMPLATE.TEMPLATE_RANDOM;
 	    Globals globals = new Globals();
-	    MapGen gen = new MapGen(globals, mapgen);
+	    MapGen gen = new MapGen(globals, mapgen, baseFieldData);
 	    gen.GenerateMap(fullcqgame, 12345);
 	    
 	    Console.WriteLine("Hello, World!");

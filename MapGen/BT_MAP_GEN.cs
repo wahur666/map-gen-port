@@ -7,16 +7,16 @@ using U32 = UInt32;
 using SINGLE = float;
 
 public class _terrainInfo() {
-	const int GT_PATH = 32;
-	string terrainArchType = "";
-	SINGLE probability = 0f;
-	U32 minToPlace = 0;
-	U32 maxToPlace = 0;
-	DMapGen.DMAP_FUNC numberFunc = DMapGen.DMAP_FUNC.LINEAR;
-	U32 size = 0;
-	U32 requiredToPlace = 0;
-	DMapGen.OVERLAP overlap = DMapGen.OVERLAP.NO_OVERLAP;
-	DMapGen.PLACEMENT placement = DMapGen.PLACEMENT.RANDOM;
+	public const int GT_PATH = 32;
+	public string terrainArchType = "";
+	public SINGLE probability = 0f;
+	public U32 minToPlace = 0;
+	public U32 maxToPlace = 0;
+	public DMapGen.DMAP_FUNC numberFunc = DMapGen.DMAP_FUNC.LINEAR;
+	public U32 size = 0;
+	public U32 requiredToPlace = 0;
+	public DMapGen.OVERLAP overlap = DMapGen.OVERLAP.NO_OVERLAP;
+	public DMapGen.PLACEMENT placement = DMapGen.PLACEMENT.RANDOM;
 }
 
 [JsonConverter(typeof(BT_MAP_GEN_InfoConverter))]

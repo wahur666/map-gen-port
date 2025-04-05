@@ -11,11 +11,11 @@ public static class MapGenUtils {
 	public static readonly int MAX_MAP_GRID = 64;
 	public static readonly int MAX_MAP_SIZE = MAX_MAP_GRID * GRIDSIZE;
 	public static readonly U32 RND_MAX_PLAYER_SYSTEMS = 8;
-	public static readonly U32[] rndPlayerX = { 0, 2, 5, 8, 9, 7, 4, 1 };
-	public static readonly U32[] rndPlayerY = { 4, 1, 0, 2, 5, 8, 9, 7 };
+	public static readonly S32[] rndPlayerX = { 0, 2, 5, 8, 9, 7, 4, 1 };
+	public static readonly S32[] rndPlayerY = { 4, 1, 0, 2, 5, 8, 9, 7 };
 	public static readonly uint RND_MAX_REMOTE_SYSTEMS = 20;
-	public static readonly U32[] rndRemoteX = { 4, 6, 1, 3, 5, 7, 2, 4, 6, 8, 1, 3, 5, 7, 2, 4, 6, 8, 3, 5 };
-	public static readonly U32[] rndRemoteY = { 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7 };
+	public static readonly S32[] rndRemoteX = { 4, 6, 1, 3, 5, 7, 2, 4, 6, 8, 1, 3, 5, 7, 2, 4, 6, 8, 3, 5 };
+	public static readonly S32[] rndRemoteY = { 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7 };
 	public static readonly int RING_MAX_SYSTEMS = 16;
 	public static readonly U32[] ringSystemX = { 5, 6, 8, 7, 9, 7, 7, 5, 4, 3, 1, 2, 0, 2, 2, 4 };
 	public static readonly U32[] ringSystemY = { 0, 2, 2, 4, 5, 6, 8, 7, 9, 7, 7, 5, 4, 3, 1, 2 };
@@ -67,38 +67,38 @@ public static class MapGenUtils {
 
 	public static readonly byte GENMAP_TAKEN = 1;
 	public static readonly byte GENMAP_LEVEL1 = 2;
-	public static readonly int GENMAP_LEVEL2 = 3;
+	public static readonly byte GENMAP_LEVEL2 = 3;
 	public static readonly int GENMAP_PATH = 4;
 	public static readonly int FLAG_PLANET = 0x01;
 	public static readonly int FLAG_PATHON = 0x02;
 	public static readonly int MAX_FLAGS = 20;
 
 	public class FlagPost() {
-		public U8 type = 0;
-		public U8 xPos = 0;
-		public U8 yPos = 0;
+		public S32 type = 0;
+		public S32 xPos = 0;
+		public S32 yPos = 0;
 	};
 
-	public class GenSystem() {
-		public FlagPost[] flags = new FlagPost[MAX_FLAGS];
+	public class GenSystem {
+		public FlagPost[] flags;
 		public U32 numFlags = 0;
 
-		public U32 sectorGridX = 0;
-		public U32 sectorGridY = 0;
-		public U32 index = 0;
+		public S32 sectorGridX = 0;
+		public S32 sectorGridY = 0;
+		public S32 index = 0;
 
 		public U32 planetNameCount = 0;
 
 		public U32 x = 0;
 		public U32 y = 0;
 		public U32 size = 0;
-		public U32 jumpgateCount = 0;
+		public S32 jumpgateCount = 0;
 
 		public U32[] distToSystems = new U32[MAX_SYSTEMS];
 
 		public GenJumpgate[] jumpgates = new GenJumpgate[MAX_SYSTEMS];
-		public U32 systemID = 0;
-		public U32 playerID = 0;
+		public S32 systemID = 0;
+		public S32 playerID = 0;
 		public U32 connectionOrder = 0;
 		public U32[,] playerDistToSystems = new U32[MAX_PLAYERS, MAX_SYSTEMS];
 		public _terrainTheme theme = new ();
@@ -107,6 +107,13 @@ public static class MapGenUtils {
 		public U32 omUsed = 0;
 		public U8[,] objectMap = new U8[MAX_MAP_GRID, MAX_MAP_GRID];
 
+		public GenSystem() {
+			flags = new FlagPost[MAX_FLAGS];
+			for (int i = 0; i < flags.Length; i++) {
+				flags[i] = new FlagPost();
+			}
+		}
+		
 		public void initObjectMap() {
 			omUsed = 0;
 			omStartEmpty = 0;
@@ -134,19 +141,19 @@ public static class MapGenUtils {
 		public GenSystem system1 = new();
 		public GenSystem system2 = new();
 
-		public U32 x1 = 0;
-		public U32 y1 = 0;
-		public U32 x2 = 0;
-		public U32 y2 = 0;
+		public S32 x1 = 0;
+		public S32 y1 = 0;
+		public S32 x2 = 0;
+		public S32 y2 = 0;
 
-		public U32 dist = 0;
-		bool created = false; // 1 BIT
+		public S32 dist = 0;
+		public bool created = false; // 1 BIT
 	};
 
 	public class GenStruct() {
 		public BT_MAP_GEN data = new();
 
-		public U32 numPlayers = 0;
+		public S32 numPlayers = 0;
 
 		public U32 sectorSize = 0;
 		public U32[] sectorGrid = new U32[17]; //17 hight, use a shift to get the width.
@@ -161,7 +168,7 @@ public static class MapGenUtils {
 		public S32 objectBoarder = 0;
 
 		public GenSystem[] systems = new GenSystem[MAX_SYSTEMS];
-		public U32 systemCount = 0;
+		public S32 systemCount = 0;
 
 		public GenJumpgate[] jumpgate = new GenJumpgate[MAX_SYSTEMS * MAX_SYSTEMS];
 		public U32 numJumpGates = 0;

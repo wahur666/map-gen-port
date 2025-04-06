@@ -86,6 +86,8 @@ class Program {
 	    fullcqgame.mapType = MAPTYPE.RANDOM_MAP;
 	    fullcqgame.templateType = RANDOM_TEMPLATE.TEMPLATE_RANDOM;
 	    fullcqgame.mapSize = MAPSIZE.SMALL_MAP;
+	    fullcqgame.terrain = TERRAIN.LIGHT_TERRAIN;
+	    
 	    Globals globals = new Globals();
 	    MapGen gen = new MapGen(globals, mapgen, baseFieldData);
 	    gen.GenerateMap(fullcqgame, 12345);

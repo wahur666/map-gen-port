@@ -241,72 +241,66 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 	void GetJumpgatePositions(MapGenUtils.GenStruct map, MapGenUtils.GenSystem sys1,
 		MapGenUtils.GenSystem sys2,
 		out S32 jx1, out S32 jy1, out S32 jx2, out S32 jy2) {
-		S32 xDif = sys1.sectorGridX-sys2.sectorGridX;
-		S32 yDif = sys1.sectorGridY-sys2.sectorGridY;
-		SINGLE dist = MathF.Sqrt(xDif*xDif+yDif*yDif);
+		S32 xDif = sys1.sectorGridX - sys2.sectorGridX;
+		S32 yDif = sys1.sectorGridY - sys2.sectorGridY;
+		SINGLE dist = MathF.Sqrt(xDif * xDif + yDif * yDif);
 
-		S32 cSize = (S32)sys1.size/2;
-	
-		S32 edge = (S32)(((cSize-1)*xDif)/dist)+cSize;
-		S32 t = (S32)GetRand(0,0x00004FFF,DMapGen.DMAP_FUNC.MORE_IS_LIKLY);
-		jx1 = (((cSize-edge)*t) >> MapGenUtils.FIX15) + cSize;
+		S32 cSize = (S32)sys1.size / 2;
 
-		edge = (S32)(((cSize-1)*yDif)/dist)+cSize;
-		t = (S32)GetRand(0,0x00004FFF,DMapGen.DMAP_FUNC.MORE_IS_LIKLY);
-		jy1 = (((cSize-edge)*t) >> MapGenUtils.FIX15) + cSize;
+		S32 edge = (S32)(((cSize - 1) * xDif) / dist) + cSize;
+		S32 t = (S32)GetRand(0, 0x00004FFF, DMapGen.DMAP_FUNC.MORE_IS_LIKLY);
+		jx1 = (((cSize - edge) * t) >> MapGenUtils.FIX15) + cSize;
 
-		while(!SpaceEmpty(sys1,jx1,jy1,DMapGen.OVERLAP.NO_OVERLAP,3))
-		{
-			if(jx1== (U32)cSize && jy1 == (U32)cSize)
-			{
-				bool findSuccess = FindPosition(sys1,3,DMapGen.OVERLAP.NO_OVERLAP,ref jx1,ref jy1);
+		edge = (S32)(((cSize - 1) * yDif) / dist) + cSize;
+		t = (S32)GetRand(0, 0x00004FFF, DMapGen.DMAP_FUNC.MORE_IS_LIKLY);
+		jy1 = (((cSize - edge) * t) >> MapGenUtils.FIX15) + cSize;
+
+		while (!SpaceEmpty(sys1, jx1, jy1, DMapGen.OVERLAP.NO_OVERLAP, 3)) {
+			if (jx1 == (U32)cSize && jy1 == (U32)cSize) {
+				bool findSuccess = FindPosition(sys1, 3, DMapGen.OVERLAP.NO_OVERLAP, ref jx1, ref jy1);
 				CQASSERT(findSuccess, "Full System could not place jumpgate");
 				break;
-			}else
-			{
-				if(jx1 < (U32)cSize)
+			} else {
+				if (jx1 < (U32)cSize)
 					++jx1;
-				else if(jx1 > (U32)cSize)
+				else if (jx1 > (U32)cSize)
 					--jx1;
 			}
-			if(!SpaceEmpty(sys1,jx1,jy1, DMapGen.OVERLAP.NO_OVERLAP,3))
-			{
-				if(jy1 < (U32)cSize)
+
+			if (!SpaceEmpty(sys1, jx1, jy1, DMapGen.OVERLAP.NO_OVERLAP, 3)) {
+				if (jy1 < (U32)cSize)
 					++jy1;
-				else if(jy1 > (U32)cSize)
+				else if (jy1 > (U32)cSize)
 					--jy1;
 			}
 		}
 
-		cSize = (S32)sys2.size/2;
+		cSize = (S32)sys2.size / 2;
 
-		edge = (S32)(((cSize-1)*(-xDif))/dist)+cSize;
-		t = (S32)GetRand(0,0x00004FFF,DMapGen.DMAP_FUNC.MORE_IS_LIKLY);
-		jx2 = (((cSize-edge)*t) >> MapGenUtils.FIX15) + cSize;
+		edge = (S32)(((cSize - 1) * (-xDif)) / dist) + cSize;
+		t = (S32)GetRand(0, 0x00004FFF, DMapGen.DMAP_FUNC.MORE_IS_LIKLY);
+		jx2 = (((cSize - edge) * t) >> MapGenUtils.FIX15) + cSize;
 
-		edge = (S32)(((cSize-1)*(-yDif))/dist)+cSize;
-		t = (S32)GetRand(0,0x00004FFF,DMapGen.DMAP_FUNC.MORE_IS_LIKLY);
-		jy2 = (((cSize-edge)*t) >> MapGenUtils.FIX15) + cSize;
+		edge = (S32)(((cSize - 1) * (-yDif)) / dist) + cSize;
+		t = (S32)GetRand(0, 0x00004FFF, DMapGen.DMAP_FUNC.MORE_IS_LIKLY);
+		jy2 = (((cSize - edge) * t) >> MapGenUtils.FIX15) + cSize;
 
-		while(!SpaceEmpty(sys2,jx2,jy2, DMapGen.OVERLAP.NO_OVERLAP,3))
-		{
-			if(jx2== (U32)cSize && jy2 == (U32)cSize)
-			{
-				bool findSuccess = FindPosition(sys2,3, DMapGen.OVERLAP.NO_OVERLAP,ref jx2,ref jy2);
+		while (!SpaceEmpty(sys2, jx2, jy2, DMapGen.OVERLAP.NO_OVERLAP, 3)) {
+			if (jx2 == (U32)cSize && jy2 == (U32)cSize) {
+				bool findSuccess = FindPosition(sys2, 3, DMapGen.OVERLAP.NO_OVERLAP, ref jx2, ref jy2);
 				CQASSERT(findSuccess, "Full System could not place jumpgate");
 				break;
-			}else
-			{
-				if(jx2 < (U32)cSize)
+			} else {
+				if (jx2 < (U32)cSize)
 					++jx2;
-				else if(jx2 > (U32)cSize)
+				else if (jx2 > (U32)cSize)
 					--jx2;
 			}
-			if(!SpaceEmpty(sys2,jx2,jy2, DMapGen.OVERLAP.NO_OVERLAP,3))
-			{
-				if(jy2 < (U32)cSize)
+
+			if (!SpaceEmpty(sys2, jx2, jy2, DMapGen.OVERLAP.NO_OVERLAP, 3)) {
+				if (jy2 < (U32)cSize)
 					++jy2;
-				else if(jy2 > (U32)cSize)
+				else if (jy2 > (U32)cSize)
 					--jy2;
 			}
 		}
@@ -489,7 +483,7 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 	}
 
 	void RunHomeMacros(MapGenUtils.GenStruct map) {
-		S32 xPos = 0; 
+		S32 xPos = 0;
 		S32 yPos = 0;
 		for (U32 s1 = 0; s1 < map.systemCount; ++s1) {
 			MapGenUtils.GenSystem system = map.systems[s1];
@@ -1172,15 +1166,148 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 	}
 
 	void PopulateSystems(MapGenUtils.GenStruct map) {
-		throw new NotImplementedException();
+		U32 s1;
+		MapGenUtils.GenSystem system;
+
+		// have to cut up 75% of map generation between the number of systems
+		CQASSERT(map.systemCount > 0);
+		SINGLE rate = 0.50f / map.systemCount;
+		SINGLE progress = 0.25f;
+
+		for (s1 = 0; s1 < map.systemCount; s1++) {
+			system = (map.systems[s1]);
+			PopulateSystem(map, system);
+		}
 	}
 
-	void PopulateSystem(MapGenUtils.GenStruct map, MapGenUtils.GenSystem[] system) {
-		throw new NotImplementedException();
+	void PopulateSystem(MapGenUtils.GenStruct map, MapGenUtils.GenSystem system) {
+		//habitable Planets
+		U32 maxPlanetIndex = 0;
+		U32 i;
+		for (i = 0; i < _terrainTheme.MAX_TYPES; ++i) {
+			if (system.theme.habitablePlanets[i] != "")
+				++maxPlanetIndex;
+			else
+				break;
+		}
+
+		U32 numPlanets = system.theme.numHabitablePlanets[map.terrainSize];
+		for (i = 0; i < numPlanets; ++i) {
+			var posX = 0;
+			var posY = 0;
+			bool bSuccess = FindPosition(system, 4, DMapGen.OVERLAP.NO_OVERLAP, ref posX, ref posY);
+			if (bSuccess) {
+				if (system.numFlags < MapGenUtils.MAX_FLAGS) {
+					system.flags[system.numFlags].xPos = posX + 2;
+					system.flags[system.numFlags].yPos = posY + 2;
+					system.flags[system.numFlags].type = MapGenUtils.FLAG_PLANET | MapGenUtils.FLAG_PATHON;
+					system.numFlags++;
+				}
+
+				U32 planetID = GetRand(0, maxPlanetIndex - 1, DMapGen.DMAP_FUNC.LINEAR);
+				insertObject(system.theme.habitablePlanets[planetID],
+					new Vector3((posX + 2), (posY + 2), 0), 0, system.systemID, system);
+				// placePlanetsMoons(map, system, posX + 2, posY + 2);
+				FillPosition(system, posX, posY, 4, DMapGen.OVERLAP.NO_OVERLAP);
+			}
+		}
+
+		//Ore Planets
+		maxPlanetIndex = 0;
+		for (i = 0; i < _terrainTheme.MAX_TYPES; ++i) {
+			if (system.theme.metalPlanets[i] != "")
+				++maxPlanetIndex;
+			else
+				break;
+		}
+
+		numPlanets = system.theme.numMetalPlanets[map.terrainSize];
+		for (i = 0; i < numPlanets; ++i) {
+			S32 posX = 0;
+			S32 posY = 0;
+			bool bSuccess = FindPosition(system, 4, DMapGen.OVERLAP.NO_OVERLAP, ref posX, ref posY);
+			if (bSuccess) {
+				if (system.numFlags < MapGenUtils.MAX_FLAGS) {
+					system.flags[system.numFlags].xPos = posX + 2;
+					system.flags[system.numFlags].yPos = posY + 2;
+					system.flags[system.numFlags].type = MapGenUtils.FLAG_PLANET | MapGenUtils.FLAG_PATHON;
+					system.numFlags++;
+				}
+
+				U32 planetID = GetRand(0, maxPlanetIndex - 1, DMapGen.DMAP_FUNC.LINEAR);
+				insertObject(system.theme.metalPlanets[planetID],
+					new Vector3((posX + 2), (posY + 2), 0), 0, system.systemID, system);
+				// placePlanetsMoons(map, system, posX + 2, posY + 2);
+				FillPosition(system, posX, posY, 4, DMapGen.OVERLAP.NO_OVERLAP);
+			}
+		}
+
+		//gas Planets
+		maxPlanetIndex = 0;
+		for (i = 0; i < _terrainTheme.MAX_TYPES; ++i) {
+			if (system.theme.gasPlanets[i] != "")
+				++maxPlanetIndex;
+			else
+				break;
+		}
+
+		numPlanets = system.theme.numGasPlanets[map.terrainSize];
+		for (i = 0; i < numPlanets; ++i) {
+			S32 posX = 0;
+			S32 posY = 0;
+			bool bSuccess = FindPosition(system, 4, DMapGen.OVERLAP.NO_OVERLAP, ref posX, ref posY);
+			if (bSuccess) {
+				if (system.numFlags < MapGenUtils.MAX_FLAGS) {
+					system.flags[system.numFlags].xPos = posX + 2;
+					system.flags[system.numFlags].yPos = posY + 2;
+					system.flags[system.numFlags].type = MapGenUtils.FLAG_PLANET | MapGenUtils.FLAG_PATHON;
+					system.numFlags++;
+				}
+
+				U32 planetID = GetRand(0, maxPlanetIndex - 1, DMapGen.DMAP_FUNC.LINEAR);
+				insertObject(system.theme.gasPlanets[planetID],
+					new Vector3((posX + 2), (posY + 2), 0), 0, system.systemID, system);
+				// placePlanetsMoons(map, system, posX + 2, posY + 2);
+				FillPosition(system, posX, posY, 4, DMapGen.OVERLAP.NO_OVERLAP);
+			}
+		}
+
+		//crew Planets
+		maxPlanetIndex = 0;
+		for (i = 0; i < _terrainTheme.MAX_TYPES; ++i) {
+			if (system.theme.otherPlanets[i] != "")
+				++maxPlanetIndex;
+			else
+				break;
+		}
+
+		numPlanets = system.theme.numOtherPlanets[map.terrainSize];
+		for (i = 0; i < numPlanets; ++i) {
+			var posX = 0;
+			var posY = 0;
+			bool bSuccess = FindPosition(system, 4, DMapGen.OVERLAP.NO_OVERLAP, ref posX, ref posY);
+			if (bSuccess) {
+				if (system.numFlags < MapGenUtils.MAX_FLAGS) {
+					system.flags[system.numFlags].xPos = posX + 2;
+					system.flags[system.numFlags].yPos = posY + 2;
+					system.flags[system.numFlags].type = MapGenUtils.FLAG_PLANET | MapGenUtils.FLAG_PATHON;
+					system.numFlags++;
+				}
+
+				U32 planetID = GetRand(0, maxPlanetIndex - 1, DMapGen.DMAP_FUNC.LINEAR);
+				insertObject(system.theme.otherPlanets[planetID],
+					new Vector3((posX + 2), (posY + 2), 0), 0, system.systemID, system);
+				// placePlanetsMoons(map, system, posX + 2, posY + 2);
+				FillPosition(system, posX, posY, 4, DMapGen.OVERLAP.NO_OVERLAP);
+			}
+		}
+
+		BuildPaths(system);
+		GenerateTerain(map, system);
 	}
 
-	void placePlanetsMoons(MapGenUtils.GenStruct map, MapGenUtils.GenSystem[] system, U32 planetPosX,
-		U32 planetPosY) {
+	void placePlanetsMoons(MapGenUtils.GenStruct map, MapGenUtils.GenSystem system, S32 planetPosX,
+		S32 planetPosY) {
 		throw new NotImplementedException();
 	}
 
@@ -1269,12 +1396,199 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 
 //	bool ColisionWithObject(GenObj * obj,Vector vect,U32 rad,MAP_GEN_ENUM::OVERLAP overlap);
 
-	void GenerateTerain(MapGenUtils.GenStruct map, MapGenUtils.GenSystem[] system) {
-		throw new NotImplementedException();
+	void GenerateTerain(MapGenUtils.GenStruct map, MapGenUtils.GenSystem system) {
+		//select system Kit
+		U32 numTypes = 0;
+		while (system.theme.systemKit[numTypes] != "" && numTypes < _terrainTheme.MAX_TYPES) {
+			++numTypes;
+		}
+
+		if (numTypes > 0) {
+			Console.WriteLine("Setting background kit to {0}",
+				system.theme.systemKit[GetRand(0, numTypes - 1, DMapGen.DMAP_FUNC.LINEAR)]);
+			// SECTOR->SetLightingKit(system->systemID,system->theme->systemKit[GetRand(0,numTypes-1,MAP_GEN_ENUM::LINEAR)]);
+		}
+
+		//gas Nebulas
+		S32 resourceAmount = (S32)system.theme.numNuggetPatchesGas[map.terrainSize];
+		numTypes = 0;
+		while (system.theme.nuggetGasTypes[numTypes].terrainArchType != "" && numTypes < _terrainTheme.MAX_TYPES) {
+			++numTypes;
+		}
+
+		if (numTypes > 0) {
+			while (resourceAmount > 0) {
+				U32 pos = GetRand(0, numTypes - 1, DMapGen.DMAP_FUNC.LINEAR);
+				PlaceTerrain(map, system.theme.nuggetGasTypes[pos], system);
+				--resourceAmount;
+			}
+		}
+
+		//ore nebulas
+		resourceAmount = (int)system.theme.numNuggetPatchesMetal[map.terrainSize];
+		numTypes = 0;
+		while (system.theme.nuggetMetalTypes[numTypes].terrainArchType != "" && numTypes < _terrainTheme.MAX_TYPES) {
+			++numTypes;
+		}
+
+		if (numTypes > 0) {
+			while (resourceAmount > 0) {
+				U32 pos = GetRand(0, numTypes - 1, DMapGen.DMAP_FUNC.LINEAR);
+				PlaceTerrain(map, system.theme.nuggetMetalTypes[pos], system);
+				--resourceAmount;
+			}
+		}
+
+		U32[] typeProb = new U32[_terrainTheme.MAX_TERRAIN];
+		//find number of terrain types in theme and place required terrain
+		numTypes = 0;
+		U32 totalProb = 0;
+		U32 totalPlaced = 0;
+		while (system.theme.terrain[numTypes].terrainArchType != "" && numTypes < _terrainTheme.MAX_TERRAIN) {
+			U32 numPlaced = 0;
+			while (numPlaced < system.theme.terrain[numTypes].requiredToPlace) {
+				++numPlaced;
+				++totalPlaced;
+				PlaceTerrain(map, system.theme.terrain[numTypes], system);
+			}
+
+			typeProb[numTypes] = (U32)((system.theme.terrain[numTypes].probability) * 10000);
+			totalProb += typeProb[numTypes];
+			++numTypes;
+		}
+
+		if (numTypes == 0 || totalProb == 0)
+			return;
+		//now generate the rest of the terrain
+		while (system.theme.density[map.terrainSize] > (system.omUsed / ((SINGLE)(system.omStartEmpty)))) {
+			U32 prob = GetRand(0, totalProb, DMapGen.DMAP_FUNC.LINEAR);
+			U32 index = 0;
+			while (index < numTypes) {
+				if (typeProb[index] >= prob)
+					break;
+				else
+					prob -= typeProb[index];
+				++index;
+			}
+
+			CQASSERT(index < numTypes);
+
+			PlaceTerrain(map, system.theme.terrain[index], system);
+		}
 	}
 
 	void PlaceTerrain(MapGenUtils.GenStruct map, _terrainInfo terrain, MapGenUtils.GenSystem system) {
-		throw new NotImplementedException();
+		//special types to place
+		//field
+		//antimatter ribbons
+		Console.WriteLine($"Gettitng basic bitch data for: {terrain.terrainArchType}");
+		var data = _baseFieldData.Find(x => x.terrainArchType == terrain.terrainArchType);
+
+		if (data is null) {
+			throw new Exception(
+				$"Bad archtype name in random map generator.  Fix the data not a code bug, Name:{terrain.terrainArchType}");
+		}
+
+		if ((data.objClass == ObjClass.OC_NEBULA) || (data.objClass == ObjClass.OC_FIELD)) {
+			BASE_FIELD_DATA fData = data;
+			if (fData.fieldClass == FIELDCLASS.FC_ANTIMATTER) {
+				switch (terrain.placement) {
+					case DMapGen.PLACEMENT.RANDOM: {
+						U32 length = GetRand(terrain.minToPlace, terrain.maxToPlace, terrain.numberFunc);
+						PlaceRandomRibbon(terrain, length, 0, 0, system);
+					}
+						break;
+					case DMapGen.PLACEMENT.SPOTS:
+						CQASSERT(false, "NOT SUPPORTED");
+						break;
+					case DMapGen.PLACEMENT.CLUSTER:
+						CQASSERT(false, "NOT SUPPORTED");
+						break;
+					case DMapGen.PLACEMENT.PLANET_RING:
+						CQASSERT(false, "NOT SUPPORTED");
+						break;
+					case DMapGen.PLACEMENT.STREEKS:
+						CQASSERT(false, "NOT SUPPORTED");
+						break;
+				}
+			} else //a regular nebula
+			{
+				switch (terrain.placement) {
+					case DMapGen.PLACEMENT.RANDOM: {
+						U32 numToPlace = GetRand(terrain.minToPlace, terrain.maxToPlace, terrain.numberFunc);
+						PlaceRandomField(terrain, numToPlace, 0, 0, system);
+					}
+						break;
+					case DMapGen.PLACEMENT.SPOTS: {
+						U32 numToPlace = GetRand(terrain.minToPlace, terrain.maxToPlace, terrain.numberFunc);
+						PlaceSpottyField(terrain, numToPlace, 0, 0, system);
+					}
+						break;
+					case DMapGen.PLACEMENT.CLUSTER:
+						CQASSERT(false, "NOT SUPPORTED");
+						break;
+					case DMapGen.PLACEMENT.PLANET_RING: {
+						PlaceRingField(terrain, system);
+					}
+						break;
+					case DMapGen.PLACEMENT.STREEKS:
+						CQASSERT(false, "NOT SUPPORTED");
+						break;
+				}
+			}
+		} else // it is a regular object
+		{
+			switch (terrain.placement) {
+				case DMapGen.PLACEMENT.RANDOM: {
+					U32 numToPlace = GetRand(terrain.minToPlace, terrain.maxToPlace, terrain.numberFunc);
+					for (U32 i = 0; i < numToPlace; ++i) {
+						S32 xPos = 0;
+						S32 yPos = 0;
+						bool bSuccess = FindPosition(system, terrain.size, terrain.overlap, ref xPos, ref yPos);
+						if (bSuccess) {
+							FillPosition(system, xPos, yPos, terrain.size, terrain.overlap);
+							U32 halfWidth = (terrain.size) / 2;
+							insertObject(terrain.terrainArchType,
+								new Vector3(xPos + halfWidth, yPos + halfWidth, 0), 0,
+								system.systemID, system);
+						} else {
+							system.omUsed += terrain.size * terrain.size;
+						}
+					}
+				}
+					break;
+				case DMapGen.PLACEMENT.SPOTS:
+					CQASSERT(false, "NOT SUPPORTED");
+					break;
+				case DMapGen.PLACEMENT.CLUSTER: {
+					U32 numToPlace = GetRand(terrain.minToPlace, terrain.maxToPlace, terrain.numberFunc);
+					var xPos = 0;
+					var yPos = 0;
+					bool bSuccess = FindPosition(system, terrain.size, terrain.overlap, ref xPos, ref yPos);
+					if (bSuccess) {
+						for (U32 i = 0; i < numToPlace; ++i) {
+							U32 angle = GetRand(0, 360, DMapGen.DMAP_FUNC.LINEAR);
+							U32 dist = GetRand(0, terrain.size/ 2, DMapGen.DMAP_FUNC.LINEAR);
+							Vector3 position =
+								new Vector3(xPos + 0.5f, yPos + 0.5f, 0) +
+								new Vector3(MathF.Cos(angle * MathF.PI / 180) * dist, MathF.Sin(angle * MathF.PI / 180) * dist, 0);
+							insertObject(terrain.terrainArchType, position, 0, system.systemID, system);
+						}
+
+						FillPosition(system, xPos, yPos, terrain.size, terrain.overlap);
+					} else {
+						system.omUsed = terrain.size * terrain.size;
+					}
+				}
+					break;
+				case DMapGen.PLACEMENT.PLANET_RING:
+					CQASSERT(false, "NOT SUPPORTED");
+					break;
+				case DMapGen.PLACEMENT.STREEKS:
+					CQASSERT(false, "NOT SUPPORTED");
+					break;
+			}
+		}
 	}
 
 	void PlaceRandomField(_terrainInfo terrain, U32 numToPlace, S32 startX, S32 startY,
@@ -1346,7 +1660,74 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 
 	void PlaceSpottyField(_terrainInfo terrain, U32 numToPlace, S32 startX, S32 startY,
 		MapGenUtils.GenSystem system) {
-		throw new NotImplementedException();
+		numToPlace *= 2;
+		CQASSERT(numToPlace < 256, "If you are getting this I can make the number bigger");
+		S32[] tempX = new S32[256];
+		S32[] tempY = new S32[256];
+		S32 tempIndex = 0;
+		S32[] finalX = new S32[256];
+		S32[] finalY = new S32[256];
+		S32 finalIndex = 1;
+		if(startX == 0 && startY == 0)
+		{
+			bool bSucess = FindPosition(system,1,terrain.overlap,ref finalX[0], ref finalY[0]);
+			if(!bSucess)
+			{
+				system.omUsed += numToPlace;
+				return;
+			}
+		}
+		else
+		{
+			finalX[0] = startX;
+			finalY[0] = startY;
+		}
+		S32 lastFinal = 0;
+		S32 numMade = 1;
+		while(numMade < numToPlace)
+		{
+			lastFinal = finalIndex-1;
+			checkNewXY(tempX,tempY,ref tempIndex,finalX,finalY,finalIndex, terrain,system,finalX[lastFinal]+1,finalY[lastFinal]);
+			checkNewXY(tempX,tempY,ref tempIndex,finalX,finalY,finalIndex, terrain,system,finalX[lastFinal],finalY[lastFinal]+1);
+			if(finalX[lastFinal] != 0)
+				checkNewXY(tempX,tempY,ref tempIndex,finalX,finalY,finalIndex, terrain,system,finalX[lastFinal]-1,finalY[lastFinal]);
+			if(finalY[lastFinal] != 0)
+				checkNewXY(tempX,tempY,ref tempIndex,finalX,finalY,finalIndex, terrain,system,finalX[lastFinal],finalY[lastFinal]-1);
+
+			if(tempIndex == 0)
+				return;
+			U32 newIndex = GetRand(0, (uint)tempIndex-1, DMapGen.DMAP_FUNC.LINEAR);
+			finalX[finalIndex] = tempX[newIndex];
+			finalY[finalIndex] = tempY[newIndex];
+
+			removeFromArray(finalX[finalIndex],finalY[finalIndex],tempX,tempY,ref tempIndex);
+
+			++finalIndex;
+			++numMade;
+		}
+
+		for(U32 count = 0; count < (finalIndex/2); ++count)
+		{
+			finalX[count] = finalX[(count*2)+1];
+			finalY[count] = finalY[(count*2)+1];
+		}
+		finalIndex = finalIndex/2;
+		U32 i;
+		for(i = 0; i < numMade; ++i)
+		{
+			FillPosition(system,finalX[i],finalY[i],1,terrain.overlap);
+		}
+
+		for(i = 0; i < finalIndex;++i)
+		{
+			//felülvizsgálni
+			finalX[i] += 1;
+			finalY[i] += 1;
+		}
+		Console.WriteLine(
+			$"CreateField {terrain.terrainArchType} finalx; {P(finalX[..finalIndex])}, finaly: {P(finalY[..finalIndex])}, finalIndex: {finalIndex}, systemId: {system.systemID}");
+
+		// FIELDMGR->CreateField(terrain->terrainArchType,(S32 *)finalX,(S32 *)finalY,finalIndex,system->systemID);
 	}
 
 	void PlaceRingField(_terrainInfo terrain, MapGenUtils.GenSystem system) {
@@ -1359,7 +1740,18 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 	}
 
 	void BuildPaths(MapGenUtils.GenSystem system) {
-		throw new NotImplementedException();
+		MapGenUtils.FlagPost post1 = null;
+		for (U32 i = 0; i < system.numFlags; ++i) {
+			if ((system.flags[i].type & MapGenUtils.FLAG_PATHON) == 0) {
+				continue;
+			}
+
+			if (post1 != null) {
+				connectPosts(post1, (system.flags[i]), system);
+			}
+
+			post1 = (system.flags[i]);
+		}
 	}
 
 	//other
@@ -1420,6 +1812,83 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 
 	void connectPosts(MapGenUtils.FlagPost post1, MapGenUtils.FlagPost post2,
 		MapGenUtils.GenSystem system) {
-		throw new NotImplementedException();
+		S32 xPos = post1.xPos;
+		S32 yPos = post1.yPos;
+		var rand = MapGenUtils.rand;
+		while (true) {
+			if (system.objectMap[xPos, yPos] != MapGenUtils.GENMAP_TAKEN)
+				system.objectMap[xPos, yPos] = (byte)MapGenUtils.GENMAP_PATH;
+			if (xPos == post2.xPos) {
+				if (yPos == post2.yPos) {
+					return;
+				} else {
+					if (yPos > post2.yPos) {
+						S32 rVal = rand.Next(4);
+						if (rVal == 0)
+							++xPos;
+						else if (rVal == 1)
+							--xPos;
+						else
+							--yPos;
+					} else {
+						S32 rVal = rand.Next(4);
+						if (rVal == 0)
+							++xPos;
+						else if (rVal == 1)
+							--xPos;
+						else
+							++yPos;
+					}
+				}
+			} else if (yPos == post2.yPos) {
+				if (xPos > post2.xPos) {
+					S32 rVal = rand.Next(4);
+					if (rVal == 0)
+						++yPos;
+					else if (rVal == 1)
+						--yPos;
+					else
+						--xPos;
+				} else {
+					S32 rVal = rand.Next(4);
+					if (rVal == 0)
+						++yPos;
+					else if (rVal == 1)
+						--yPos;
+					else
+						++xPos;
+				}
+			} else {
+				if (xPos > post2.xPos) {
+					if (yPos > post2.xPos) {
+						S32 rVal = rand.Next(2);
+						if (rVal == 0)
+							--yPos;
+						else
+							--xPos;
+					} else {
+						S32 rVal = rand.Next(2);
+						if (rVal == 0)
+							++yPos;
+						else
+							--xPos;
+					}
+				} else {
+					if (yPos > post2.xPos) {
+						S32 rVal = rand.Next(2);
+						if (rVal == 0)
+							--yPos;
+						else
+							++xPos;
+					} else {
+						S32 rVal = rand.Next(2);
+						if (rVal == 0)
+							++yPos;
+						else
+							++xPos;
+					}
+				}
+			}
+		}
 	}
 }

@@ -35,7 +35,7 @@ public static class MapGenUtils {
 	//the random numbers caqn be understood to be in fixed 15 floating point.
 	public static readonly int FIX15 = 15;
 
-	private static Random rand = null;
+	public static Random rand = null;
 
 	public static void InitializeRandom(int seed) {
 		rand = new Random(seed);

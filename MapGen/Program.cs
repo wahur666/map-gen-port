@@ -85,10 +85,11 @@ class Program {
 	    fullcqgame.money = MONEY.LOW_MONEY;
 	    fullcqgame.mapType = MAPTYPE.RANDOM_MAP;
 	    fullcqgame.templateType = RANDOM_TEMPLATE.TEMPLATE_RANDOM;
+	    fullcqgame.mapSize = MAPSIZE.SMALL_MAP;
 	    Globals globals = new Globals();
 	    MapGen gen = new MapGen(globals, mapgen, baseFieldData);
 	    gen.GenerateMap(fullcqgame, 12345);
 	    
-	    Console.WriteLine("Hello, World!");
+	    Console.WriteLine("Map generated!");
     }
 }

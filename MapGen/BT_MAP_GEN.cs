@@ -44,7 +44,7 @@ public class _terrainTheme() {
 	public string[] habitablePlanets = new string[MAX_TYPES];
 	public string[] otherPlanets = new string[MAX_TYPES];
 
-	// public byte[,] moonTypes = new byte[MAX_TYPES,GT_PATH];
+	public string[] moonTypes = new string[MAX_TYPES];
 
 	public DMapGen.SECTOR_SIZE sizeOk = DMapGen.SECTOR_SIZE.SMALL_SIZE; //dependant on size setting
 	public U32 minSize = 0;

@@ -3,7 +3,7 @@
 namespace MapGen;
 
 class Program {
-	public static string mapgenfile = "data/bt_map_gen.json";
+	public static string mapgenfile = "data/bt_map_gen-c2vu.json";
 	
     static void Main(string[] args) {
 	    var settings = new JsonSerializerSettings {
@@ -33,18 +33,50 @@ class Program {
 		    .Where(x => x != "")
 		    .Distinct()
 		    .ToList();
+	    
+	    allArchiypes.Sort();
 
+	    Console.WriteLine("Available Archiypes: [\n  " + string.Join(",\n  ", allArchiypes) + "\n]");
+
+	    /* c2vu
+	    BlackHole,
+	     */
+	    /* c2fwf
+	    ANTIMATTER!!Antimatter,
+	    ANTIMATTER!!mantis,
+	    ANTIMATTER!!solarian,
+	    ANTIMATTER!!terran,
+	    BlackHole,
+	    BlueStar,
+	    Field!!AsteroidsHeavy,
+	    Field!!AsteroidsLight,
+	    Field!!AsteroidsMed,
+	    GreenStar,
+	    Nebula!!Antimatter,
+	    Nebula!!Antimatter(mantis),
+	    Nebula!!Antimatter(solarian),
+	    Nebula!!Antimatter(terran),
+	    Nebula!!Celsius(terran),
+	    Nebula!!Cygnus(solarian),
+	    Nebula!!Helious(terran),
+	    Nebula!!Hyades(mantis),
+	    Nebula!!Ion(solarian),
+	    Nebula!!Lithium(mantis),
+	    RedStar,
+	    YellowStar
+		*/
+	    
 	    List<BASE_FIELD_DATA> baseFieldData = [
 			new BASE_FIELD_DATA("Field!!AsteroidsHeavy", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
-			new BASE_FIELD_DATA("Field!!AsteroidsMed", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
 			new BASE_FIELD_DATA("Field!!AsteroidsLight", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
-			new BASE_FIELD_DATA("Nebula!!Ion(solarian)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
-			new BASE_FIELD_DATA("Nebula!!Helious(terran)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
-			new BASE_FIELD_DATA("Nebula!!Celsius(terran)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
-			new BASE_FIELD_DATA("Nebula!!Hyades(mantis)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
-			new BASE_FIELD_DATA("Nebula!!Cygnus(solarian)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
-			new BASE_FIELD_DATA("Nebula!!Lithium(mantis)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new BASE_FIELD_DATA("Field!!AsteroidsMed", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
 			new BASE_FIELD_DATA("Field!!Debris", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
+			new BASE_FIELD_DATA("Nebula!!Celsius(terran)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new BASE_FIELD_DATA("Nebula!!Cygnus(solarian)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new BASE_FIELD_DATA("Nebula!!Helious(terran)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new BASE_FIELD_DATA("Nebula!!Hyades(mantis)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new BASE_FIELD_DATA("Nebula!!Ion(solarian)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new BASE_FIELD_DATA("Nebula!!Lithium(mantis)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
 	    ];
 	    
 	    FULLCQGAME fullcqgame = new FULLCQGAME();

@@ -39,6 +39,7 @@ public enum ObjClass {
 
 public enum FIELDCLASS
 {
+	FC_OTHER,
 	FC_ASTEROIDFIELD=1,
 	FC_MINEFIELD,
 	FC_NEBULA,

@@ -3,7 +3,7 @@
 namespace MapGen;
 
 class Program {
-	public static string mapgenfile = "data/bt_map_gen-c2vu.json";
+	public static string mapgenfile = "data/bt_map_gen-c2fwf.json";
 	
     static void Main(string[] args) {
 	    var settings = new JsonSerializerSettings {
@@ -38,45 +38,60 @@ class Program {
 
 	    Console.WriteLine("Available Archiypes: [\n  " + string.Join(",\n  ", allArchiypes) + "\n]");
 
-	    /* c2vu
-	    BlackHole,
-	     */
-	    /* c2fwf
-	    ANTIMATTER!!Antimatter,
-	    ANTIMATTER!!mantis,
-	    ANTIMATTER!!solarian,
-	    ANTIMATTER!!terran,
-	    BlackHole,
-	    BlueStar,
+	    /* Original + Code
 	    Field!!AsteroidsHeavy,
 	    Field!!AsteroidsLight,
 	    Field!!AsteroidsMed,
-	    GreenStar,
-	    Nebula!!Antimatter,
-	    Nebula!!Antimatter(mantis),
-	    Nebula!!Antimatter(solarian),
-	    Nebula!!Antimatter(terran),
 	    Nebula!!Celsius(terran),
 	    Nebula!!Cygnus(solarian),
 	    Nebula!!Helious(terran),
 	    Nebula!!Hyades(mantis),
 	    Nebula!!Ion(solarian),
 	    Nebula!!Lithium(mantis),
+	    */
+	    /* c2vu extra
+	    BlackHole,
+	     */
+	    /* c2fwf extra
+	    ANTIMATTER!!Antimatter,
+	    ANTIMATTER!!mantis,
+	    ANTIMATTER!!solarian,
+	    ANTIMATTER!!terran,
+	    BlackHole,
+	    BlueStar,
+	    GreenStar,
+	    Nebula!!Antimatter,
+	    Nebula!!Antimatter(mantis),
+	    Nebula!!Antimatter(solarian),
+	    Nebula!!Antimatter(terran),
 	    RedStar,
 	    YellowStar
 		*/
 	    
 	    List<BASE_FIELD_DATA> baseFieldData = [
+			new BASE_FIELD_DATA("ANTIMATTER!!Antimatter", ObjClass.OC_FIELD, FIELDCLASS.FC_ANTIMATTER),
+			new BASE_FIELD_DATA("ANTIMATTER!!mantis", ObjClass.OC_FIELD, FIELDCLASS.FC_ANTIMATTER),
+			new BASE_FIELD_DATA("ANTIMATTER!!solarian", ObjClass.OC_FIELD, FIELDCLASS.FC_ANTIMATTER),
+			new BASE_FIELD_DATA("ANTIMATTER!!terran", ObjClass.OC_FIELD, FIELDCLASS.FC_ANTIMATTER),
 			new BASE_FIELD_DATA("Field!!AsteroidsHeavy", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
 			new BASE_FIELD_DATA("Field!!AsteroidsLight", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
 			new BASE_FIELD_DATA("Field!!AsteroidsMed", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
 			new BASE_FIELD_DATA("Field!!Debris", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
+			new BASE_FIELD_DATA("Nebula!!Antimatter", ObjClass.OC_NEBULA, FIELDCLASS.FC_ANTIMATTER),
+			new BASE_FIELD_DATA("Nebula!!Antimatter(mantis)", ObjClass.OC_NEBULA, FIELDCLASS.FC_ANTIMATTER),
+			new BASE_FIELD_DATA("Nebula!!Antimatter(solarian)", ObjClass.OC_NEBULA, FIELDCLASS.FC_ANTIMATTER),
+			new BASE_FIELD_DATA("Nebula!!Antimatter(terran)", ObjClass.OC_NEBULA, FIELDCLASS.FC_ANTIMATTER),
 			new BASE_FIELD_DATA("Nebula!!Celsius(terran)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
 			new BASE_FIELD_DATA("Nebula!!Cygnus(solarian)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
 			new BASE_FIELD_DATA("Nebula!!Helious(terran)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
 			new BASE_FIELD_DATA("Nebula!!Hyades(mantis)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
 			new BASE_FIELD_DATA("Nebula!!Ion(solarian)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
 			new BASE_FIELD_DATA("Nebula!!Lithium(mantis)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new BASE_FIELD_DATA("BlackHole", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new BASE_FIELD_DATA("BlueStar", ObjClass.OC_BLACKHOLE, FIELDCLASS.FC_OTHER),
+			new BASE_FIELD_DATA("GreenStar", ObjClass.OC_BLACKHOLE, FIELDCLASS.FC_OTHER),
+			new BASE_FIELD_DATA("RedStar", ObjClass.OC_BLACKHOLE, FIELDCLASS.FC_OTHER),
+			new BASE_FIELD_DATA("YellowStar", ObjClass.OC_BLACKHOLE, FIELDCLASS.FC_OTHER),
 	    ];
 	    
 	    FULLCQGAME fullcqgame = new FULLCQGAME();

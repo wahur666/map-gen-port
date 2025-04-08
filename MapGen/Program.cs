@@ -128,10 +128,10 @@ class Program {
 	    fullcqgame.szPlayerNames[1] = "Player2";
 	    fullcqgame.szPlayerNames[2] = "Player3";
 
-	    fullcqgame.numSystems = 6;
+	    fullcqgame.numSystems = 4;
 	    fullcqgame.money = MONEY.LOW_MONEY;
 	    fullcqgame.mapType = MAPTYPE.RANDOM_MAP;
-	    fullcqgame.templateType = RANDOM_TEMPLATE.TEMPLATE_RING;
+	    fullcqgame.templateType = RANDOM_TEMPLATE.TEMPLATE_STAR;
 	    fullcqgame.mapSize = MAPSIZE.SMALL_MAP;
 	    fullcqgame.terrain = TERRAIN.LIGHT_TERRAIN;
 
@@ -139,6 +139,9 @@ class Program {
 	    if (fullcqgame.templateType == RANDOM_TEMPLATE.TEMPLATE_RING &&
 	        fullcqgame.numSystems % fullcqgame.activeSlots != 0) {
 		    throw new Exception($"Number of systems must be a multiple of the number of players. Players: {fullcqgame.activeSlots}, Systems: {fullcqgame.numSystems}");
+	    } 
+	    if (fullcqgame.templateType == RANDOM_TEMPLATE.TEMPLATE_STAR && (fullcqgame.numSystems - 1) % fullcqgame.activeSlots != 0) {
+		    throw new Exception($"Number of systems must be a multiple of the number of players plus 1. Players: {fullcqgame.activeSlots}, Systems: {fullcqgame.numSystems}");
 	    }
 	    
 	    Globals globals = new Globals();

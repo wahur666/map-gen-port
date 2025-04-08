@@ -273,7 +273,86 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 	}
 
 	void generateSystemsStar(MapGenUtils.GenStruct map) {
-		throw new NotImplementedException();
+		//create center system
+
+		map.systems[0] = new MapGenUtils.GenSystem();
+		MapGenUtils.GenSystem system1 = map.systems[0];			
+
+		system1.sectorGridX = MapGenUtils.starCenterX;
+		system1.sectorGridY = MapGenUtils.starCenterY;
+	
+		map.sectorGrid[system1.sectorGridX] |= (uint)(0x00000001 <<system1.sectorGridY); 
+
+		system1.index = 0;
+
+		map.systemCount++;
+
+		//create trees
+		U32 systemsPerPlayer = (map.systemsToMake-1)/(uint)map.numPlayers;
+		U32 treeUsed = 0;
+		for(S32 i = 0; i < map.numPlayers; ++i)
+		{
+			S32 tree;
+			do
+			{
+				tree = (S32)GetRand(0,(uint)MapGenUtils.STAR_MAX_TREE-1,DMapGen.DMAP_FUNC.LINEAR);
+			}while(((0x01 << tree)&treeUsed) != 0);
+			treeUsed |= (uint)(0x01 << tree);
+
+			map.systems[map.systemCount] = new MapGenUtils.GenSystem();
+			//create home system
+			system1 = map.systems[map.systemCount];			
+
+			system1.sectorGridX = MapGenUtils.starTreeX[tree,0];
+			system1.sectorGridY = MapGenUtils.starTreeY[tree,0];
+		
+			map.sectorGrid[system1.sectorGridX] |= (uint)(0x00000001 <<system1.sectorGridY); 
+
+			system1.index = map.systemCount;
+			system1.playerID = i+1;
+
+			map.systemCount++;
+
+			//create leaf systems
+			bool createSys1 = false;
+			bool createSys2 = false;
+			if(systemsPerPlayer == 2)
+			{
+				if(GetRand(1,10,DMapGen.DMAP_FUNC.LINEAR) > 5)
+					createSys1 = true;
+				else
+					createSys2 = true;
+			}else if(systemsPerPlayer == 3)
+			{
+				createSys1 = true;
+				createSys2 = true;
+			}
+			if(createSys1) {
+				map.systems[map.systemCount] = new MapGenUtils.GenSystem();
+				system1 = map.systems[map.systemCount];			
+				system1.sectorGridX = MapGenUtils.starTreeX[tree,1];
+				system1.sectorGridY = MapGenUtils.starTreeY[tree,1];
+			
+				map.sectorGrid[system1.sectorGridX] |= (uint)(0x00000001 <<system1.sectorGridY); 
+
+				system1.index = map.systemCount;
+
+				map.systemCount++;
+			}
+			if(createSys2) {
+				map.systems[map.systemCount] = new MapGenUtils.GenSystem();
+				system1 = map.systems[map.systemCount];			
+
+				system1.sectorGridX = MapGenUtils.starTreeX[tree, 2];
+				system1.sectorGridY = MapGenUtils.starTreeY[tree, 2];
+			
+				map.sectorGrid[system1.sectorGridX] |= (uint)(0x00000001 <<system1.sectorGridY); 
+
+				system1.index = map.systemCount;
+
+				map.systemCount++;
+			}
+		}
 	}
 
 	bool SystemsOverlap(MapGenUtils.GenStruct map, MapGenUtils.GenSystem system) {
@@ -1266,11 +1345,34 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 	}
 
 	void createStarGates(MapGenUtils.GenStruct map) {
-		throw new NotImplementedException();
+		for(U32 i = 0; i < map.numPlayers; ++i)
+		{
+			U32 systemsPerPlayer = (map.systemsToMake-1)/(U32)map.numPlayers;
+			createJumpgatesForIndexs(map,0,1+(i*systemsPerPlayer));
+			if(systemsPerPlayer > 1)
+			{
+				createJumpgatesForIndexs(map,1+(i*systemsPerPlayer),2+(i*systemsPerPlayer));
+			}
+			if(systemsPerPlayer > 2)
+			{
+				createJumpgatesForIndexs(map,1+(i*systemsPerPlayer),3+(i*systemsPerPlayer));
+			}
+		}
 	}
 
 	void createJumpgatesForIndexs(MapGenUtils.GenStruct map, U32 index1, U32 index2) {
-		throw new NotImplementedException();
+		for(U32 i = 0; i < map.numJumpGates; ++i)
+		{
+			MapGenUtils.GenJumpgate jumpgate = (map.jumpgate[i]);
+			if((index1 == jumpgate.system1.index && index2 == jumpgate.system2.index) ||
+			   (index2 == jumpgate.system1.index && index2 == jumpgate.system1.index))
+			{
+				jumpgate.system1.jumpgates[jumpgate.system1.jumpgateCount++] = jumpgate;
+				jumpgate.system2.jumpgates[jumpgate.system2.jumpgateCount++] = jumpgate;
+				jumpgate.created = true;
+				return;
+			}
+		}
 	}
 
 	void PopulateSystems(MapGenUtils.GenStruct map) {
@@ -1495,6 +1597,9 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 	}
 
 	bool SpaceEmpty(MapGenUtils.GenSystem system, S32 xPos, S32 yPos, DMapGen.OVERLAP overlap, U32 size) {
+		if (xPos < 0 || yPos < 0) {
+			return false;
+		}
 		if (xPos + size - 1 >= system.size)
 			return false;
 		if (yPos + size - 1 >= system.size)

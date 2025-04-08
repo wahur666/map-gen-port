@@ -20,16 +20,16 @@ public static class MapGenUtils {
 	public static readonly S32[] ringSystemX = { 5, 6, 8, 7, 9, 7, 7, 5, 4, 3, 1, 2, 0, 2, 2, 4 };
 	public static readonly S32[] ringSystemY = { 0, 2, 2, 4, 5, 6, 8, 7, 9, 7, 7, 5, 4, 3, 1, 2 };
 	public static readonly int STAR_MAX_TREE = 8;
-	public static readonly U32 starCenterX = 4;
-	public static readonly U32 starCenterY = 4;
+	public static readonly int starCenterX = 4;
+	public static readonly int starCenterY = 4;
 	public static readonly int MAX_SYSTEMS = 16;
 	public static readonly int MAX_PLAYERS = 8;
 
 
-	public static readonly U32[,] starTreeX =
+	public static readonly S32[,] starTreeX =
 		{ { 4, 3, 5 }, { 6, 7, 8 }, { 6, 8, 8 }, { 6, 8, 7 }, { 4, 5, 3 }, { 2, 1, 0 }, { 2, 0, 0 }, { 2, 0, 1 } };
 
-	public static readonly U32[,] starTreeY =
+	public static readonly S32[,] starTreeY =
 		{ { 2, 0, 0 }, { 2, 0, 1 }, { 4, 3, 5 }, { 6, 7, 8 }, { 6, 8, 8 }, { 6, 8, 7 }, { 4, 5, 3 }, { 2, 1, 0 } };
 
 	//the random numbers caqn be understood to be in fixed 15 floating point.

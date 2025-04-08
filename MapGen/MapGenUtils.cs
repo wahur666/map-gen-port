@@ -17,8 +17,8 @@ public static class MapGenUtils {
 	public static readonly S32[] rndRemoteX = { 4, 6, 1, 3, 5, 7, 2, 4, 6, 8, 1, 3, 5, 7, 2, 4, 6, 8, 3, 5 };
 	public static readonly S32[] rndRemoteY = { 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7 };
 	public static readonly int RING_MAX_SYSTEMS = 16;
-	public static readonly U32[] ringSystemX = { 5, 6, 8, 7, 9, 7, 7, 5, 4, 3, 1, 2, 0, 2, 2, 4 };
-	public static readonly U32[] ringSystemY = { 0, 2, 2, 4, 5, 6, 8, 7, 9, 7, 7, 5, 4, 3, 1, 2 };
+	public static readonly S32[] ringSystemX = { 5, 6, 8, 7, 9, 7, 7, 5, 4, 3, 1, 2, 0, 2, 2, 4 };
+	public static readonly S32[] ringSystemY = { 0, 2, 2, 4, 5, 6, 8, 7, 9, 7, 7, 5, 4, 3, 1, 2 };
 	public static readonly int STAR_MAX_TREE = 8;
 	public static readonly U32 starCenterX = 4;
 	public static readonly U32 starCenterY = 4;
@@ -99,7 +99,7 @@ public static class MapGenUtils {
 		public GenJumpgate[] jumpgates = new GenJumpgate[MAX_SYSTEMS];
 		public S32 systemID = 0;
 		public S32 playerID = 0;
-		public U32 connectionOrder = 0;
+		public S32 connectionOrder = 0;
 		public U32[,] playerDistToSystems = new U32[MAX_PLAYERS, MAX_SYSTEMS];
 		public _terrainTheme theme = new ();
 

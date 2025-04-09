@@ -276,77 +276,76 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 		//create center system
 
 		map.systems[0] = new MapGenUtils.GenSystem();
-		MapGenUtils.GenSystem system1 = map.systems[0];			
+		MapGenUtils.GenSystem system1 = map.systems[0];
 
 		system1.sectorGridX = MapGenUtils.starCenterX;
 		system1.sectorGridY = MapGenUtils.starCenterY;
-	
-		map.sectorGrid[system1.sectorGridX] |= (uint)(0x00000001 <<system1.sectorGridY); 
+
+		map.sectorGrid[system1.sectorGridX] |= (uint)(0x00000001 << system1.sectorGridY);
 
 		system1.index = 0;
 
 		map.systemCount++;
 
 		//create trees
-		U32 systemsPerPlayer = (map.systemsToMake-1)/(uint)map.numPlayers;
+		U32 systemsPerPlayer = (map.systemsToMake - 1) / (uint)map.numPlayers;
 		U32 treeUsed = 0;
-		for(S32 i = 0; i < map.numPlayers; ++i)
-		{
+		for (S32 i = 0; i < map.numPlayers; ++i) {
 			S32 tree;
-			do
-			{
-				tree = (S32)GetRand(0,(uint)MapGenUtils.STAR_MAX_TREE-1,DMapGen.DMAP_FUNC.LINEAR);
-			}while(((0x01 << tree)&treeUsed) != 0);
+			do {
+				tree = (S32)GetRand(0, (uint)MapGenUtils.STAR_MAX_TREE - 1, DMapGen.DMAP_FUNC.LINEAR);
+			} while (((0x01 << tree) & treeUsed) != 0);
+
 			treeUsed |= (uint)(0x01 << tree);
 
 			map.systems[map.systemCount] = new MapGenUtils.GenSystem();
 			//create home system
-			system1 = map.systems[map.systemCount];			
+			system1 = map.systems[map.systemCount];
 
-			system1.sectorGridX = MapGenUtils.starTreeX[tree,0];
-			system1.sectorGridY = MapGenUtils.starTreeY[tree,0];
-		
-			map.sectorGrid[system1.sectorGridX] |= (uint)(0x00000001 <<system1.sectorGridY); 
+			system1.sectorGridX = MapGenUtils.starTreeX[tree, 0];
+			system1.sectorGridY = MapGenUtils.starTreeY[tree, 0];
+
+			map.sectorGrid[system1.sectorGridX] |= (uint)(0x00000001 << system1.sectorGridY);
 
 			system1.index = map.systemCount;
-			system1.playerID = i+1;
+			system1.playerID = i + 1;
 
 			map.systemCount++;
 
 			//create leaf systems
 			bool createSys1 = false;
 			bool createSys2 = false;
-			if(systemsPerPlayer == 2)
-			{
-				if(GetRand(1,10,DMapGen.DMAP_FUNC.LINEAR) > 5)
+			if (systemsPerPlayer == 2) {
+				if (GetRand(1, 10, DMapGen.DMAP_FUNC.LINEAR) > 5)
 					createSys1 = true;
 				else
 					createSys2 = true;
-			}else if(systemsPerPlayer == 3)
-			{
+			} else if (systemsPerPlayer == 3) {
 				createSys1 = true;
 				createSys2 = true;
 			}
-			if(createSys1) {
+
+			if (createSys1) {
 				map.systems[map.systemCount] = new MapGenUtils.GenSystem();
-				system1 = map.systems[map.systemCount];			
-				system1.sectorGridX = MapGenUtils.starTreeX[tree,1];
-				system1.sectorGridY = MapGenUtils.starTreeY[tree,1];
-			
-				map.sectorGrid[system1.sectorGridX] |= (uint)(0x00000001 <<system1.sectorGridY); 
+				system1 = map.systems[map.systemCount];
+				system1.sectorGridX = MapGenUtils.starTreeX[tree, 1];
+				system1.sectorGridY = MapGenUtils.starTreeY[tree, 1];
+
+				map.sectorGrid[system1.sectorGridX] |= (uint)(0x00000001 << system1.sectorGridY);
 
 				system1.index = map.systemCount;
 
 				map.systemCount++;
 			}
-			if(createSys2) {
+
+			if (createSys2) {
 				map.systems[map.systemCount] = new MapGenUtils.GenSystem();
-				system1 = map.systems[map.systemCount];			
+				system1 = map.systems[map.systemCount];
 
 				system1.sectorGridX = MapGenUtils.starTreeX[tree, 2];
 				system1.sectorGridY = MapGenUtils.starTreeY[tree, 2];
-			
-				map.sectorGrid[system1.sectorGridX] |= (uint)(0x00000001 <<system1.sectorGridY); 
+
+				map.sectorGrid[system1.sectorGridX] |= (uint)(0x00000001 << system1.sectorGridY);
 
 				system1.index = map.systemCount;
 
@@ -622,15 +621,15 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 							case DMapGen.MACRO_OPERATION.MC_PLACE_HABITABLE_PLANET:
 								createPlanetFromList(xPos, yPos, system, macro.range, system.theme.habitablePlanets);
 								break;
-							// 					case MAP_GEN_ENUM::MC_PLACE_GAS_PLANET:
-							// 						createPlanetFromList(xPos,yPos,system,macro->range,system->theme->gasPlanets);
-							// 						break;
-							// 					case MAP_GEN_ENUM::MC_PLACE_METAL_PLANET:
-							// 						createPlanetFromList(xPos,yPos,system,macro->range,system->theme->metalPlanets);
-							// 						break;
-							// 					case MAP_GEN_ENUM::MC_PLACE_OTHER_PLANET:
-							// 						createPlanetFromList(xPos,yPos,system,macro->range,system->theme->otherPlanets);
-							// 						break;
+							case DMapGen.MACRO_OPERATION.MC_PLACE_GAS_PLANET:
+								createPlanetFromList(xPos,yPos,system,macro.range,system.theme.gasPlanets);
+								break;
+							case DMapGen.MACRO_OPERATION.MC_PLACE_METAL_PLANET:
+								createPlanetFromList(xPos,yPos,system,macro.range,system.theme.metalPlanets);
+								break;
+							case DMapGen.MACRO_OPERATION.MC_PLACE_OTHER_PLANET:
+								createPlanetFromList(xPos,yPos,system,macro.range,system.theme.otherPlanets);
+								break;
 							case DMapGen.MACRO_OPERATION.MC_PLACE_TERRAIN:
 								Console.WriteLine("Running MC_PLACE_TERRAIN macro");
 								placeMacroTerrain(xPos, yPos, system, macro.range, macro.info.terrainInfo);
@@ -743,7 +742,7 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 			return;
 		}
 
-		Console.WriteLine($"Gettitng basic bitch data for: {terrainInfo.terrainArchType}");
+		// Console.WriteLine($"Gettitng basic bitch data for: {terrainInfo.terrainArchType}");
 		var data = _baseFieldData.Find(x => x.terrainArchType == terrainInfo.terrainArchType);
 
 		if (data is null) {
@@ -908,94 +907,239 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 	}
 
 	void createRandomGates3(MapGenUtils.GenStruct map) {
-		throw new NotImplementedException();
+		if (map.systemCount < map.numPlayers * 2) {
+			createRandomGates2(map);
+		} else {
+			U32 levelSystems = 0;
+
+			U32 targetSystems = 0;
+
+			S32 i;
+			for (i = 0; i < map.systemCount; ++i) {
+				if (map.systems[i].playerID > 0) {
+					levelSystems |= (uint)(0x01 << i);
+				} else {
+					targetSystems |= (uint)(0x01 << i);
+				}
+			}
+
+			//create web of systems;
+			bool freeSystems = false;
+			while (targetSystems > 0) {
+				U32[] currentGates = new U32[64];
+				U32[] bestGates = new U32[64];
+				S32 bestScore = 0;
+				S32 bestGateNum = 0;
+				createGateLevel2(map, levelSystems, levelSystems, targetSystems, 0, currentGates, 0, bestGates,
+					ref bestScore, ref bestGateNum, true);
+				if (bestGateNum == 0) {
+					freeSystems = true;
+					break;
+				} else {
+					U32 newLevel = 0;
+					for (i = 0; i < bestGateNum; ++i) {
+						if (((0x01 << (map.jumpgate[bestGates[i]].system1.index)) & levelSystems) != 0)
+							newLevel |= (uint)(0x01 << map.jumpgate[bestGates[i]].system2.index);
+						else
+							newLevel |= (uint)(0x01 << map.jumpgate[bestGates[i]].system1.index);
+						map.jumpgate[bestGates[i]].system1.jumpgates[
+							map.jumpgate[bestGates[i]].system1.jumpgateCount++] = (map.jumpgate[bestGates[i]]);
+						map.jumpgate[bestGates[i]].system2.jumpgates[
+							map.jumpgate[bestGates[i]].system2.jumpgateCount++] = (map.jumpgate[bestGates[i]]);
+						map.jumpgate[bestGates[i]].created = true;
+					}
+
+					targetSystems &= (~newLevel);
+					levelSystems = newLevel;
+				}
+			}
+
+			// Attempt to connect all of the systems on the last level to one another
+			if (levelSystems > 0) {
+				for (i = 0; i < map.numJumpGates; ++i) {
+					bool isJumpgateAvailable = !map.jumpgate[i].created;
+
+					if (isJumpgateAvailable) {
+						uint system1Mask = (uint)(1 << map.jumpgate[i].system1.index);
+						uint system2Mask = (uint)(1 << map.jumpgate[i].system2.index);
+
+						bool isSystem1OnLevel = (system1Mask & levelSystems) != 0;
+						bool isSystem2OnLevel = (system2Mask & levelSystems) != 0;
+						bool areBothSystemsOnLevel = isSystem1OnLevel && isSystem2OnLevel;
+
+						if (areBothSystemsOnLevel) {
+							bool doesNotCrossOtherLinks = !CrossesAnotherLink(map, map.jumpgate[i]);
+
+							if (doesNotCrossOtherLinks) {
+								// Add jumpgate to system1
+								map.jumpgate[i].system1.jumpgates[map.jumpgate[i].system1.jumpgateCount++] =
+									map.jumpgate[i];
+
+								// Add jumpgate to system2
+								map.jumpgate[i].system2.jumpgates[map.jumpgate[i].system2.jumpgateCount++] =
+									map.jumpgate[i];
+
+								// Mark jumpgate as created
+								map.jumpgate[i].created = true;
+							}
+						}
+					}
+				}
+			}
+
+			//make sure all players are connected
+			U32 systemUnconnected = ~(0xFFFFFFFF << map.systemCount);
+			U32 systemsVisited = 0;
+			markSystems(ref systemUnconnected, map.systems[0], ref systemsVisited);
+			while (systemUnconnected > 0) {
+				for (i = 0; i < map.systemCount; ++i) {
+					// Check if current system is unconnected
+					uint systemMask = (uint)(1 << i);
+					bool isSystemUnconnected = (systemMask & systemUnconnected) != 0;
+
+					if (isSystemUnconnected) {
+						bool breakOk = false;
+
+						for (uint j = 0; j < map.numJumpGates; ++j) {
+							if (!map.jumpgate[j].created) {
+								// System 1 scenario
+								bool isSystem1CurrentSystem = map.jumpgate[j].system1.index == i;
+								uint system2Mask = (uint)(1 << map.jumpgate[j].system2.index);
+								bool isSystem2Connected = (system2Mask & systemUnconnected) == 0;
+								bool isSystem2Neutral = map.jumpgate[j].system2.playerID == 0;
+								bool isSystem1Valid = isSystem1CurrentSystem && isSystem2Connected && isSystem2Neutral;
+
+								// System 2 scenario
+								bool isSystem2CurrentSystem = map.jumpgate[j].system2.index == i;
+								uint system1Mask = (uint)(1 << map.jumpgate[j].system1.index);
+								bool isSystem1Connected = (system1Mask & systemUnconnected) == 0;
+								bool isSystem1Neutral = map.jumpgate[j].system1.playerID == 0;
+								bool isSystem2Valid = isSystem2CurrentSystem && isSystem1Connected && isSystem1Neutral;
+
+								// Either scenario is valid
+								bool isValidConnection = isSystem1Valid || isSystem2Valid;
+
+								if (isValidConnection) {
+									bool doesNotCrossOtherLinks = !CrossesAnotherLink(map, map.jumpgate[j]);
+
+									if (doesNotCrossOtherLinks) {
+										// Random chance to break or always choose first valid connection
+										bool shouldCreateJumpgate =
+											!breakOk || GetRand(1, 10, DMapGen.DMAP_FUNC.LINEAR) > 5;
+
+										if (shouldCreateJumpgate) {
+											// Add jumpgate to system1
+											map.jumpgate[j].system1.jumpgates[map.jumpgate[j].system1.jumpgateCount++] =
+												map.jumpgate[j];
+
+											// Add jumpgate to system2
+											map.jumpgate[j].system2.jumpgates[map.jumpgate[j].system2.jumpgateCount++] =
+												map.jumpgate[j];
+
+											// Mark jumpgate as created
+											map.jumpgate[j].created = true;
+											breakOk = true;
+										}
+									}
+								}
+							}
+						}
+
+						if (breakOk)
+							break;
+					}
+				}
+
+				// Recalculate unconnected systems
+				systemUnconnected = ~(0xFFFFFFFF << map.systemCount);
+				systemsVisited = 0;
+				markSystems(ref systemUnconnected, map.systems[0], ref systemsVisited);
+			}
+		}
 	}
 
 
 	void createGateLevel2(MapGenUtils.GenStruct map, U32 totalLevel, U32 levelSystems, U32 targetSystems,
-		U32 gateNum, U32[] currentGates, U32 score,
-		U32[] bestGates, ref U32 bestScore, ref U32 bestGateNum, bool moreAllowed) {
-		throw new NotImplementedException();
-		// if (levelSystems == 0) {
-		// 	if (bestScore != 0) {
-		// 		if (bestScore > score) {
-		// 			bestScore = score;
-		// 			bestGateNum = gateNum;
-		// 			Array.Copy(currentGates, bestGates, gateNum);
-		// 		}
-		// 	} else {
-		// 		bestScore = score;
-		// 		bestGateNum = gateNum;
-		// 		Array.Copy(currentGates, bestGates, gateNum);
-		// 	}
-		// } else {
-		// 	S32 currentSystem = 0;
-		// 	S32 i;
-		// 	for (i = 0; i < map.systemCount; ++i) {
-		// 		if ((levelSystems & (0x01 << i)) != 0) {
-		// 			currentSystem = i;
-		// 			break;
-		// 		}
-		// 	}
-		//
-		// 	U32 newLevel = levelSystems & (~(0x01 << currentSystem));
-		// 	bool gateMade = !moreAllowed; // only do back up if more are allowed as well
-		// 	for (i = 0; i < map.numJumpGates; ++i) {
-		// 		if (!(map.jumpgate[i].created)) {
-		// 			if ((map.jumpgate[i].system1.index == currentSystem &&
-		// 			     (targetSystems & (0x01 << (map.jumpgate[i].system2.index))) != 0) ||
-		// 			    (map.jumpgate[i].system2.index == currentSystem &&
-		// 			     (targetSystems & (0x01 << (map.jumpgate[i].system1.index))) != 0)) {
-		// 				if ((!CrossesAnotherLink(map, ref map.jumpgate[i]))) {
-		// 					gateMade = true;
-		// 					U32 gateScore = scoreGate(map, i);
-		// 					map.jumpgate[i].system1.jumpgates[map.jumpgate[i].system1.jumpgateCount++] =
-		// 						ref map.jumpgate[i];
-		// 					map.jumpgate[i].system2.jumpgates[map.jumpgate[i].system2.jumpgateCount++] =
-		// 						ref map.jumpgate[i];
-		// 					map.jumpgate[i].created = true;
-		// 					currentGates[gateNum] = i;
-		// 					if (moreAllowed) {
-		// 						createGateLevel(map, totalLevel, levelSystems, targetSystems, gateNum + 1, currentGates,
-		// 							score + gateScore, bestGates, ref bestScore, ref bestGateNum, false);
-		// 					} else
-		// 						createGateLevel(map, totalLevel, newLevel, targetSystems, gateNum + 1, currentGates,
-		// 							score + gateScore, bestGates, ref bestScore, ref bestGateNum, true);
-		//
-		// 					map.jumpgate[i].system1.jumpgates[--map.jumpgate[i].system1.jumpgateCount] = null;
-		// 					map.jumpgate[i].system2.jumpgates[--map.jumpgate[i].system2.jumpgateCount] = null;
-		// 					map.jumpgate[i].created = false;
-		// 				}
-		// 			}
-		// 		}
-		// 	}
-		//
-		// 	if (!gateMade) {
-		// 		for (i = 0; i < map.numJumpGates; ++i) {
-		// 			if (!(map.jumpgate[i].created)) {
-		// 				if ((map.jumpgate[i].system1.index == currentSystem &&
-		// 				     (totalLevel & (0x01 << (map.jumpgate[i].system2.index))) != 0) ||
-		// 				    (map.jumpgate[i].system2.index == currentSystem &&
-		// 				     (totalLevel & (0x01 << (map.jumpgate[i].system1.index))) != 0)) {
-		// 					if ((!CrossesAnotherLink(map, ref map.jumpgate[i]))) {
-		// 						U32 gateScore = scoreGate(map, i);
-		// 						map.jumpgate[i].system1.jumpgates[map.jumpgate[i].system1.jumpgateCount++] =
-		// 							ref map.jumpgate[i];
-		// 						map.jumpgate[i].system2.jumpgates[map.jumpgate[i].system2.jumpgateCount++] =
-		// 							ref map.jumpgate[i];
-		// 						map.jumpgate[i].created = true;
-		// 						currentGates[gateNum] = i;
-		// 						createGateLevel(map, totalLevel, newLevel, targetSystems, gateNum + 1, currentGates,
-		// 							score + gateScore, bestGates, ref bestScore, ref bestGateNum, true);
-		// 						map.jumpgate[i].system1.jumpgates[--map.jumpgate[i].system1.jumpgateCount] = null;
-		// 						map.jumpgate[i].system2.jumpgates[--map.jumpgate[i].system2.jumpgateCount] = null;
-		// 						map.jumpgate[i].created = false;
-		// 					}
-		// 				}
-		// 			}
-		// 		}
-		// 	}
-		// }
+		S32 gateNum, U32[] currentGates, S32 score,
+		U32[] bestGates, ref S32 bestScore, ref S32 bestGateNum, bool moreAllowed) {
+		if (levelSystems == 0) {
+			if (bestScore != 0) {
+				if (bestScore > score) {
+					bestScore = score;
+					bestGateNum = gateNum;
+					Array.Copy(currentGates, bestGates, gateNum);
+				}
+			} else {
+				bestScore = score;
+				bestGateNum = gateNum;
+				Array.Copy(currentGates, bestGates, gateNum);
+			}
+		} else {
+			S32 currentSystem = 0;
+			S32 i;
+			for (i = 0; i < map.systemCount; ++i) {
+				if ((levelSystems & (0x01 << i)) != 0) {
+					currentSystem = i;
+					break;
+				}
+			}
+		
+			U32 newLevel = levelSystems & (U32)(~(0x01 << currentSystem));
+			bool gateMade = !moreAllowed; // only do back up if more are allowed as well
+			for (i = 0; i < map.numJumpGates; ++i) {
+				if (!(map.jumpgate[i].created)) {
+					if ((map.jumpgate[i].system1.index == currentSystem &&
+					     (targetSystems & (0x01 << (map.jumpgate[i].system2.index))) != 0) ||
+					    (map.jumpgate[i].system2.index == currentSystem &&
+					     (targetSystems & (0x01 << (map.jumpgate[i].system1.index))) != 0)) {
+						if ((!CrossesAnotherLink(map, map.jumpgate[i]))) {
+							gateMade = true;
+							S32 gateScore = scoreGate(map, i);
+							map.jumpgate[i].system1.jumpgates[map.jumpgate[i].system1.jumpgateCount++] =
+								map.jumpgate[i];
+							map.jumpgate[i].system2.jumpgates[map.jumpgate[i].system2.jumpgateCount++] =
+								map.jumpgate[i];
+							map.jumpgate[i].created = true;
+							currentGates[gateNum] = (uint)i;
+							if (moreAllowed) {
+								createGateLevel(map, (int)totalLevel, (int)levelSystems, (int)targetSystems, (int)gateNum + 1, currentGates,
+									score + gateScore, bestGates, ref bestScore, ref bestGateNum, false);
+							} else
+								createGateLevel(map, (int)totalLevel, (int)newLevel, (int)targetSystems, gateNum + 1, currentGates,
+									score + gateScore, bestGates, ref bestScore, ref bestGateNum, true);
+		
+							map.jumpgate[i].system1.jumpgates[--map.jumpgate[i].system1.jumpgateCount] = null;
+							map.jumpgate[i].system2.jumpgates[--map.jumpgate[i].system2.jumpgateCount] = null;
+							map.jumpgate[i].created = false;
+						}
+					}
+				}
+			}
+		
+			if (!gateMade) {
+				for (i = 0; i < map.numJumpGates; ++i) {
+					if (!(map.jumpgate[i].created)) {
+						if ((map.jumpgate[i].system1.index == currentSystem &&
+						     (totalLevel & (0x01 << (map.jumpgate[i].system2.index))) != 0) ||
+						    (map.jumpgate[i].system2.index == currentSystem &&
+						     (totalLevel & (0x01 << (map.jumpgate[i].system1.index))) != 0)) {
+							if ((!CrossesAnotherLink(map, map.jumpgate[i]))) {
+								S32 gateScore = scoreGate(map, i);
+								map.jumpgate[i].system1.jumpgates[map.jumpgate[i].system1.jumpgateCount++] = map.jumpgate[i];
+								map.jumpgate[i].system2.jumpgates[map.jumpgate[i].system2.jumpgateCount++] = map.jumpgate[i];
+								map.jumpgate[i].created = true;
+								currentGates[gateNum] = (uint)i;
+								createGateLevel(map, (int)totalLevel, (int)newLevel, (int)targetSystems, gateNum + 1, currentGates,
+									score + gateScore, bestGates, ref bestScore, ref bestGateNum, true);
+								map.jumpgate[i].system1.jumpgates[--map.jumpgate[i].system1.jumpgateCount] = null;
+								map.jumpgate[i].system2.jumpgates[--map.jumpgate[i].system2.jumpgateCount] = null;
+								map.jumpgate[i].created = false;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	void createRandomGates2(MapGenUtils.GenStruct map) {
@@ -1345,28 +1489,24 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 	}
 
 	void createStarGates(MapGenUtils.GenStruct map) {
-		for(U32 i = 0; i < map.numPlayers; ++i)
-		{
-			U32 systemsPerPlayer = (map.systemsToMake-1)/(U32)map.numPlayers;
-			createJumpgatesForIndexs(map,0,1+(i*systemsPerPlayer));
-			if(systemsPerPlayer > 1)
-			{
-				createJumpgatesForIndexs(map,1+(i*systemsPerPlayer),2+(i*systemsPerPlayer));
+		for (U32 i = 0; i < map.numPlayers; ++i) {
+			U32 systemsPerPlayer = (map.systemsToMake - 1) / (U32)map.numPlayers;
+			createJumpgatesForIndexs(map, 0, 1 + (i * systemsPerPlayer));
+			if (systemsPerPlayer > 1) {
+				createJumpgatesForIndexs(map, 1 + (i * systemsPerPlayer), 2 + (i * systemsPerPlayer));
 			}
-			if(systemsPerPlayer > 2)
-			{
-				createJumpgatesForIndexs(map,1+(i*systemsPerPlayer),3+(i*systemsPerPlayer));
+
+			if (systemsPerPlayer > 2) {
+				createJumpgatesForIndexs(map, 1 + (i * systemsPerPlayer), 3 + (i * systemsPerPlayer));
 			}
 		}
 	}
 
 	void createJumpgatesForIndexs(MapGenUtils.GenStruct map, U32 index1, U32 index2) {
-		for(U32 i = 0; i < map.numJumpGates; ++i)
-		{
+		for (U32 i = 0; i < map.numJumpGates; ++i) {
 			MapGenUtils.GenJumpgate jumpgate = (map.jumpgate[i]);
-			if((index1 == jumpgate.system1.index && index2 == jumpgate.system2.index) ||
-			   (index2 == jumpgate.system1.index && index2 == jumpgate.system1.index))
-			{
+			if ((index1 == jumpgate.system1.index && index2 == jumpgate.system2.index) ||
+			    (index2 == jumpgate.system1.index && index2 == jumpgate.system1.index)) {
 				jumpgate.system1.jumpgates[jumpgate.system1.jumpgateCount++] = jumpgate;
 				jumpgate.system2.jumpgates[jumpgate.system2.jumpgateCount++] = jumpgate;
 				jumpgate.created = true;
@@ -1600,6 +1740,7 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 		if (xPos < 0 || yPos < 0) {
 			return false;
 		}
+
 		if (xPos + size - 1 >= system.size)
 			return false;
 		if (yPos + size - 1 >= system.size)
@@ -1769,7 +1910,7 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 		//special types to place
 		//field
 		//antimatter ribbons
-		Console.WriteLine($"Gettitng basic bitch data for: {terrain.terrainArchType}");
+		// Console.WriteLine($"Gettitng basic bitch data for: {terrain.terrainArchType}");
 		var data = _baseFieldData.Find(x => x.terrainArchType == terrain.terrainArchType);
 
 		if (data is null) {
@@ -2024,7 +2165,72 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 
 	void PlaceRandomRibbon(_terrainInfo terrain, U32 length, S32 startX, S32 startY,
 		MapGenUtils.GenSystem system) {
-		throw new NotImplementedException();
+		CQASSERT(length < 256, "If you are getting this I can make the number bigger");
+		S32[] tempX = new S32[256];
+		S32[] tempY = new S32[256];
+		S32 tempIndex = 0;
+		S32[] finalX = new S32[256];
+		S32[] finalY = new S32[256];
+		S32 finalIndex = 1;
+		if(startX == 0 && startY == 0)
+		{
+			bool bSucess = FindPosition(system,1,terrain.overlap, ref finalX[0], ref finalY[0]);
+			if(!bSucess)
+			{
+				system.omUsed += length;
+				return;
+			}
+		}
+		else
+		{
+			finalX[0] = startX;
+			finalY[0] = startY;
+		}
+		S32 lastFinal = 0;
+		U32 numMade = 1;
+		while(numMade < length)
+		{
+			lastFinal = finalIndex-1;
+			tempIndex = 0;
+			checkNewXY(tempX,tempY,ref tempIndex,finalX,finalY,finalIndex,terrain,system,finalX[lastFinal]+1,finalY[lastFinal]);
+			checkNewXY(tempX,tempY,ref tempIndex,finalX,finalY,finalIndex,terrain,system,finalX[lastFinal],finalY[lastFinal]+1);
+			if(finalX[lastFinal] != 0)
+				checkNewXY(tempX,tempY,ref tempIndex,finalX,finalY,finalIndex,terrain,system,finalX[lastFinal]-1,finalY[lastFinal]);
+			if(finalY[lastFinal] != 0)
+				checkNewXY(tempX,tempY,ref tempIndex,finalX,finalY,finalIndex,terrain,system,finalX[lastFinal],finalY[lastFinal]-1);
+
+			if(tempIndex == 0)
+				return;
+			U32 newIndex = GetRand(0,(uint)tempIndex-1,DMapGen.DMAP_FUNC.LINEAR);
+			finalX[finalIndex] = tempX[newIndex];
+			finalY[finalIndex] = tempY[newIndex];
+
+			++finalIndex;
+			++numMade;
+		}
+
+		if(numMade < 2)
+		{
+			system.omUsed += length;
+			return;
+		}
+		U32 i ;
+		for(i = 0; i < numMade; ++i)
+		{
+			FillPosition(system,finalX[i],finalY[i],1,terrain.overlap);
+		}
+
+		for(i = 0; i < finalIndex;++i)
+		{
+			// TODO: felülvizsgálni
+			finalX[i] += 1 ;
+			finalY[i] += 1;
+		}
+
+		Console.WriteLine(
+			$"CreateField {terrain.terrainArchType} finalx; {P(finalX[..finalIndex])}, finaly: {P(finalY[..finalIndex])}, finalIndex: {finalIndex}, systemId: {system.systemID}");
+
+		// FIELDMGR->CreateField(terrain->terrainArchType,(S32 *)finalX,(S32 *)finalY,finalIndex,system->systemID);
 	}
 
 	void BuildPaths(MapGenUtils.GenSystem system) {

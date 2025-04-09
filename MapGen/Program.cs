@@ -3,7 +3,7 @@
 namespace MapGen;
 
 class Program {
-	public static string mapgenfile = "data/bt_map_gen-code.json";
+	public static string mapgenfile = "data/bt_map_gen-c2fwf.json";
 	
     static void Main(string[] args) {
 	    var settings = new JsonSerializerSettings {
@@ -128,12 +128,12 @@ class Program {
 	    fullcqgame.szPlayerNames[1] = "Player2";
 	    fullcqgame.szPlayerNames[2] = "Player3";
 
-	    fullcqgame.numSystems = 4;
+	    fullcqgame.numSystems = 16;
 	    fullcqgame.money = MONEY.LOW_MONEY;
 	    fullcqgame.mapType = MAPTYPE.RANDOM_MAP;
-	    fullcqgame.templateType = RANDOM_TEMPLATE.TEMPLATE_STAR;
-	    fullcqgame.mapSize = MAPSIZE.SMALL_MAP;
-	    fullcqgame.terrain = TERRAIN.LIGHT_TERRAIN;
+	    fullcqgame.templateType = RANDOM_TEMPLATE.TEMPLATE_NEW_RANDOM;
+	    fullcqgame.mapSize = MAPSIZE.LARGE_MAP;
+	    fullcqgame.terrain = TERRAIN.HEAVY_TERRAIN;
 
 
 	    if (fullcqgame.templateType == RANDOM_TEMPLATE.TEMPLATE_RING &&
@@ -145,7 +145,7 @@ class Program {
 	    }
 	    
 	    Globals globals = new Globals();
-	    globals.MoonsEnabled = true;
+	    globals.MoonsEnabled = false;
 	    MapGen gen = new MapGen(globals, mapgen, baseFieldData);
 	    gen.GenerateMap(fullcqgame, 12345);
 	    

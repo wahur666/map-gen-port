@@ -18,8 +18,8 @@
 		canvas {
 			border: 2px solid white;
 			image-rendering: crisp-edges;
-			width: 512px;
-			height: 512px;
+			width: 500px;
+			height: 500px;
 		}
 		input {
 			margin-bottom: 10px;
@@ -32,7 +32,7 @@
 </head>
 <body>
 <input type="file" id="fileInput" />
-<canvas id="canvas" width="64" height="64"></canvas>
+<canvas id="canvas" width="25" height="25"></canvas>
 
 <script>
 	document.getElementById('fileInput').addEventListener('change', function(event) {
@@ -48,16 +48,17 @@
 	});
 
 	function drawArray(data) {
-		if (data.length !== 64 * 64) {
+		if (data.length !== 25 * 25) {
 			alert("Invalid data size. Expected 4096 values in a continuous format.");
 			return;
 		}
 
 		const canvas = document.getElementById('canvas');
 		const ctx = canvas.getContext('2d');
-		const imageData = ctx.createImageData(64, 64);
+		ctx.imageSmoothingEnabled = false;
+		const imageData = ctx.createImageData(25, 25);
 
-		const colors = ["#000000", "#555555", "#FFFFFF"]; // 0 -> black, 1 -> dark gray, 2 -> white
+		const colors = ["#000000", "#FF0000", "#00FF00", "#0000FF"]; // 0 -> black, 1 -> dark gray, 2 -> white
 
 		for (let i = 0; i < data.length; i++) {
 			let value = data[i];

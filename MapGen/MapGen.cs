@@ -36,8 +36,8 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 	public void GenerateMap(FULLCQGAME game, S32 seed) {
 		MapGenUtils.InitializeRandom(seed);
 		//init the map struct to set up the generation
-		MapGenUtils.GenStruct map = new();
-
+		_map = new MapGenUtils.GenStruct();
+		var map = _map;
 		initMap(map, game);
 		GenerateSystems(map);
 		SelectThemes(map);
@@ -46,6 +46,19 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 		CreateJumpgates(map);
 
 		PopulateSystems(map);
+
+		PrintMap(map);
+	}
+
+	private void PrintMap(MapGenUtils.GenStruct map) {
+		Console.WriteLine("{\n  \"sectors\":");
+		var systems = map.systems.Where(s => s is not null).Select(s => {
+			var arr = new byte[s.objectMap.Length];
+			Buffer.BlockCopy(s.objectMap, 0, arr, 0, arr.Length); 
+			return arr.ToList();
+		}).ToList();
+		Console.WriteLine(JsonConvert.SerializeObject(systems));
+		Console.WriteLine("}");
 	}
 
 	public U32 GetBestSystemNumber(FULLCQGAME game, U32 approxNumber) {
@@ -703,37 +716,31 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 		FindPosition(system, 6, DMapGen.OVERLAP.NO_OVERLAP, ref x, ref y);
 	}
 
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <param name="xPos"></param>
-	/// <param name="yPos"></param>
-	/// <param name="system"></param>
-	/// <param name="range"></param>
-	/// <param name="planetList">planetList[][GT_PATH]</param>
 	void createPlanetFromList(S32 xPos, S32 yPos, MapGenUtils.GenSystem system, U32 range, string[] planetList) {
 		S32 posX, posY;
 		bool bSuccess = findMacroPosition(system, xPos, yPos, range, 4, DMapGen.OVERLAP.NO_OVERLAP, out posX, out posY);
-		if (bSuccess) {
-			FillPosition(system, posX, posY, 4, DMapGen.OVERLAP.NO_OVERLAP);
-			if (system.numFlags < MapGenUtils.MAX_FLAGS) {
-				system.flags[system.numFlags].xPos = (byte)(posX + 2);
-				system.flags[system.numFlags].yPos = (byte)(posY + 2);
-				system.flags[system.numFlags].type = (byte)(MapGenUtils.FLAG_PLANET | MapGenUtils.FLAG_PATHON);
-				system.numFlags++;
-			}
-
-			U32 maxPlanetIndex = 0;
-			for (U32 i = 0; i < _terrainTheme.MAX_TYPES; ++i) {
-				if (planetList[i] != "")
-					++maxPlanetIndex;
-				else
-					break;
-			}
-
-			U32 planetID = GetRand(0, maxPlanetIndex - 1, DMapGen.DMAP_FUNC.LINEAR);
-			insertObject(planetList[planetID], new Vector3((posX + 2), (posY + 2), 0), 0, system.systemID, system);
+		if (!bSuccess) {
+			return;
 		}
+
+		FillPosition(system, posX, posY, 4, DMapGen.OVERLAP.NO_OVERLAP);
+		if (system.numFlags < MapGenUtils.MAX_FLAGS) {
+			system.flags[system.numFlags].xPos = (byte)(posX + 2);
+			system.flags[system.numFlags].yPos = (byte)(posY + 2);
+			system.flags[system.numFlags].type = (byte)(MapGenUtils.FLAG_PLANET | MapGenUtils.FLAG_PATHON);
+			system.numFlags++;
+		}
+
+		U32 maxPlanetIndex = 0;
+		for (U32 i = 0; i < _terrainTheme.MAX_TYPES; ++i) {
+			if (planetList[i] != "")
+				++maxPlanetIndex;
+			else
+				break;
+		}
+
+		U32 planetID = GetRand(0, maxPlanetIndex - 1, DMapGen.DMAP_FUNC.LINEAR);
+		insertObject(planetList[planetID], new Vector3(posX + 2, posY + 2, 0), 0, system.systemID, system);
 	}
 
 	void placeMacroTerrain(S32 centerX, S32 centerY, MapGenUtils.GenSystem system, U32 range,
@@ -1683,6 +1690,8 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 		new(1, 2),
 	];
 
+	private MapGenUtils.GenStruct _map;
+
 	void placePlanetsMoons(MapGenUtils.GenStruct map, MapGenUtils.GenSystem system, S32 planetPosX,
 		S32 planetPosY) {
 		if (!_globals.MoonsEnabled) {
@@ -2073,11 +2082,10 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 			FillPosition(system, finalX[i], finalY[i], 1, terrain.overlap);
 		}
 
-		for (i = 0; i < finalIndex; ++i) {
-			// TODO: felülvigyálni
-			finalX[i] += 1;
-			finalY[i] += 1;
-		}
+		// for (i = 0; i < finalIndex; ++i) {
+		// 	finalX[i] += 1;
+		// 	finalY[i] += 1;
+		// }
 
 		// FIELDMGR->CreateField(terrain->terrainArchType,(S32 *)finalX,(S32 *)finalY,finalIndex,system->systemID);
 		Console.WriteLine(
@@ -2147,11 +2155,10 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 			FillPosition(system, finalX[i], finalY[i], 1, terrain.overlap);
 		}
 
-		for (i = 0; i < finalIndex; ++i) {
-			//felülvizsgálni
-			finalX[i] += 1;
-			finalY[i] += 1;
-		}
+		// for (i = 0; i < finalIndex; ++i) {
+		// 	finalX[i] += 1;
+		// 	finalY[i] += 1;
+		// }
 
 		Console.WriteLine(
 			$"CreateField {terrain.terrainArchType} finalx; {P(finalX[..finalIndex])}, finaly: {P(finalY[..finalIndex])}, finalIndex: {finalIndex}, systemId: {system.systemID}");
@@ -2220,12 +2227,11 @@ public class MapGen(Globals globals, BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> ba
 			FillPosition(system,finalX[i],finalY[i],1,terrain.overlap);
 		}
 
-		for(i = 0; i < finalIndex;++i)
-		{
-			// TODO: felülvizsgálni
-			finalX[i] += 1 ;
-			finalY[i] += 1;
-		}
+		// for(i = 0; i < finalIndex;++i)
+		// {
+		// 	finalX[i] += 1 ;
+		// 	finalY[i] += 1;
+		// }
 
 		Console.WriteLine(
 			$"CreateField {terrain.terrainArchType} finalx; {P(finalX[..finalIndex])}, finaly: {P(finalY[..finalIndex])}, finalIndex: {finalIndex}, systemId: {system.systemID}");

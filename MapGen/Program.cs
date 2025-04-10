@@ -3,7 +3,7 @@
 namespace MapGen;
 
 class Program {
-	public static string mapgenfile = "data/bt_map_gen-c2fwf.json";
+	public static string mapgenfile = "data/bt_map_gen.json";
 	
     static void Main(string[] args) {
 	    var settings = new JsonSerializerSettings {
@@ -36,7 +36,7 @@ class Program {
 	    
 	    allArchiypes.Sort();
 
-	    Console.WriteLine("Available Archiypes: [\n  " + string.Join(",\n  ", allArchiypes) + "\n]");
+	    // Console.WriteLine("Available Archiypes: [\n  " + string.Join(",\n  ", allArchiypes) + "\n]");
 
 	    /* Original + Code
 	    Field!!AsteroidsHeavy,
@@ -95,7 +95,7 @@ class Program {
 	    ];
 	    
 	    FULLCQGAME fullcqgame = new FULLCQGAME();
-	    fullcqgame.activeSlots = 3;
+	    fullcqgame.activeSlots = 2;
 	    
 	    fullcqgame.slot[0].type = TYPE.HUMAN;
 	    fullcqgame.slot[0].compChalange = COMP_CHALANGE.AVERAGE_CH;
@@ -128,12 +128,12 @@ class Program {
 	    fullcqgame.szPlayerNames[1] = "Player2";
 	    fullcqgame.szPlayerNames[2] = "Player3";
 
-	    fullcqgame.numSystems = 16;
+	    fullcqgame.numSystems = 2;
 	    fullcqgame.money = MONEY.LOW_MONEY;
 	    fullcqgame.mapType = MAPTYPE.RANDOM_MAP;
-	    fullcqgame.templateType = RANDOM_TEMPLATE.TEMPLATE_NEW_RANDOM;
-	    fullcqgame.mapSize = MAPSIZE.LARGE_MAP;
-	    fullcqgame.terrain = TERRAIN.HEAVY_TERRAIN;
+	    fullcqgame.templateType = RANDOM_TEMPLATE.TEMPLATE_RANDOM;
+	    fullcqgame.mapSize = MAPSIZE.SMALL_MAP;
+	    fullcqgame.terrain = TERRAIN.LIGHT_TERRAIN;
 
 
 	    if (fullcqgame.templateType == RANDOM_TEMPLATE.TEMPLATE_RING &&

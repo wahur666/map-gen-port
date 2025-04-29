@@ -34,9 +34,7 @@ public static class DMapGen {
 	public enum SECTOR_FORMATION {
 		SF_RANDOM,
 		SF_RING,
-		SF_DOUBLERING,
 		SF_STAR,
-		SF_INRING,
 		SF_MULTI_RANDOM
 	};
 

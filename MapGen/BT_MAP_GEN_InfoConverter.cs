@@ -9,7 +9,7 @@ public class BT_MAP_GEN_InfoConverter: JsonConverter {
 	}
 
 	public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer) {
-		_info result = new _info();
+		Info result = new Info();
         
 		if (reader.TokenType == JsonToken.StartObject)
 		{
@@ -19,7 +19,7 @@ public class BT_MAP_GEN_InfoConverter: JsonConverter {
 			// If it has terrainArchType, it's probably a terrainInfo object
 			if (jObject["terrainArchType"] != null)
 			{
-				result.terrainInfo = jObject.ToObject<_terrainInfo>(serializer);
+				result.terrainInfo = jObject.ToObject<TerrainInfo>(serializer);
 			}
 		}
 		else if (reader.TokenType == JsonToken.Integer || reader.TokenType == JsonToken.Float)
@@ -36,6 +36,6 @@ public class BT_MAP_GEN_InfoConverter: JsonConverter {
 	}
 
 	public override bool CanConvert(Type objectType) {
-		return objectType == typeof(_info);
+		return objectType == typeof(Info);
 	}
 }

@@ -3,40 +3,35 @@ using System.Text.Json.Serialization;
 
 namespace MapGen;
 
-using U32 = UInt32;
-using SINGLE = float;
-
-public class _terrainInfo() {
-	public const int GT_PATH = 32;
+public class TerrainInfo() {
 	public string terrainArchType = "";
-	public SINGLE probability = 0f;
-	public U32 minToPlace = 0;
-	public U32 maxToPlace = 0;
+	public float probability = 0f;
+	public uint minToPlace = 0;
+	public uint maxToPlace = 0;
 	public DMapGen.DMAP_FUNC numberFunc = DMapGen.DMAP_FUNC.LINEAR;
-	public U32 size = 0;
-	public U32 requiredToPlace = 0;
+	public uint size = 0;
+	public uint requiredToPlace = 0;
 	public DMapGen.OVERLAP overlap = DMapGen.OVERLAP.NO_OVERLAP;
 	public DMapGen.PLACEMENT placement = DMapGen.PLACEMENT.RANDOM;
 }
 
 [JsonConverter(typeof(BT_MAP_GEN_InfoConverter))]
-public class _info() {
+public class Info() {
 	public DMapGen.OVERLAP? overlap = null;
-	public _terrainInfo? terrainInfo = null;
+	public TerrainInfo? terrainInfo = null;
 }
 
-public class _macros() {
+public class Macros() {
 	public DMapGen.MACRO_OPERATION operation = DMapGen.MACRO_OPERATION.MC_PLACE_HABITABLE_PLANET;
-	public U32 range = 0;
+	public uint range = 0;
 	public bool active = false;
-	public _info info = default;
+	public Info info = default;
 }
 
 public class _terrainTheme() {
 	public const int MAX_TERRAIN = 20;
 	public const int MAX_TYPES = 6;
 	public const int MAX_MACROS = 15;
-	public const int GT_PATH = 32;
 	public string[] systemKit = new string[MAX_TYPES];
 
 	public string[] metalPlanets = new string[MAX_TYPES];
@@ -47,32 +42,33 @@ public class _terrainTheme() {
 	public string[] moonTypes = new string[MAX_TYPES];
 
 	public DMapGen.SECTOR_SIZE sizeOk = DMapGen.SECTOR_SIZE.SMALL_SIZE; //dependant on size setting
-	public U32 minSize = 0;
-	public U32 maxSize = 0;
+	public uint minSize = 0;
+	public uint maxSize = 0;
 	public DMapGen.DMAP_FUNC sizeFunc = DMapGen.DMAP_FUNC.LINEAR;
 
-	public U32[] numHabitablePlanets = new U32[3]; //dependant on resource setting
-	public U32[] numMetalPlanets = new U32[3]; //dependant on resource setting
-	public U32[] numGasPlanets = new U32[3]; //dependant on resource setting
-	public U32[] numOtherPlanets = new U32[3]; //dependant on resource setting
+	public uint[] numHabitablePlanets = new uint[3]; //dependant on resource setting
+	public uint[] numMetalPlanets = new uint[3]; //dependant on resource setting
+	public uint[] numGasPlanets = new uint[3]; //dependant on resource setting
+	public uint[] numOtherPlanets = new uint[3]; //dependant on resource setting
 
-	public U32 minMoonsPerPlanet = 0;
-	public U32 maxMoonsPerPlanet = 0;
+	public uint minMoonsPerPlanet = 0;
+	public uint maxMoonsPerPlanet = 0;
 	public DMapGen.DMAP_FUNC moonNumberFunc = 0;
 
-	public U32[] numNuggetPatchesMetal = new U32[3]; //dependant on resource setting
-	public U32[] numNuggetPatchesGas = new U32[3]; //dependant on resource setting
+	public uint[] numNuggetPatchesMetal = new uint[3]; //dependant on resource setting
+	public uint[] numNuggetPatchesGas = new uint[3]; //dependant on resource setting
 
-	public _terrainInfo[] terrain = new _terrainInfo[MAX_TERRAIN];
-	public _terrainInfo[] nuggetMetalTypes = new _terrainInfo[MAX_TYPES];
-	public _terrainInfo[] nuggetGasTypes = new _terrainInfo[MAX_TYPES];
+	public TerrainInfo[] terrain = new TerrainInfo[MAX_TERRAIN];
+	public TerrainInfo[] nuggetMetalTypes = new TerrainInfo[MAX_TYPES];
+	public TerrainInfo[] nuggetGasTypes = new TerrainInfo[MAX_TYPES];
 	public bool okForPlayerStart = false;
 	public bool okForRemoteSystem = false;
-	public SINGLE[] density = new SINGLE[3]; //dependant on terrain setting
-	public _macros[] macros = new _macros[MAX_MACROS];
+	public float[] density = new float[3]; //dependant on terrain setting
+	public Macros[] macros = new Macros[MAX_MACROS];
 }
 
 public class BT_MAP_GEN {
 	public const int MAX_THEMES = 30;
 	public _terrainTheme[] themes = new _terrainTheme[MAX_THEMES];
+	public bool MoonsEnabled { get; set; } = false;
 }

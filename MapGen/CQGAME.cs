@@ -1,9 +1,5 @@
 ﻿namespace MapGen;
 
-using DWORD = UInt32;
-using U32 = UInt32;
-using DPID = UInt32;
-using S32 = Int32;
 
 public enum DIFFICULTY
 {
@@ -75,8 +71,8 @@ public struct SLOT
     public RACE race;
     public COLOR color;
     public TEAM team;
-    public U32 zoneSeat;
-    public DPID dpid; // id of player, 0 if computer player
+    public uint zoneSeat;
+    public int dpid; // id of player, 0 if computer player
 }
 
 public enum GAMETYPE // need 2 bits
@@ -150,13 +146,13 @@ public enum COMMANDLIMIT // need 2 bits
 
 public class OPTIONS
 {
-    public  U32 version = 1;
+    public  uint version = 1;
     public  GAMETYPE gameType = GAMETYPE.KILL_HQ_PLATS;
-    public  S32 gameSpeed = 1; // need enough bits for -16 to 15
+    public  int gameSpeed = 1; // need enough bits for -16 to 15
     public  bool regenOn = false;
     public  bool spectatorsOn = false;
     public  bool lockDiplomacyOn = false;
-    public  U32 numSystems;
+    public  uint numSystems;
     public  MONEY money;
     public  MAPTYPE mapType;
     public  RANDOM_TEMPLATE templateType;
@@ -173,7 +169,7 @@ public class CQGAME : OPTIONS
     public const int MAPNAMESIZE = 128;
     public static readonly int MAX_PLAYERS = 8;
 
-    public U32 activeSlots = 1; // valid from 1 to MAX_PLAYERS // 		U32 activeSlots:8;		
+    public uint activeSlots = 1; // valid from 1 to MAX_PLAYERS // 		U32 activeSlots:8;		
     public bool bHostBusy = false; // host is not on the final screen // 		U32 bHostBusy:1
     public bool startCountdown = false; // 		U32 startCountdown:4;	
 

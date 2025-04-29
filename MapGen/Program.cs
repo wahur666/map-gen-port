@@ -135,7 +135,6 @@ class Program {
 	    fullcqgame.mapSize = MAPSIZE.SMALL_MAP;
 	    fullcqgame.terrain = TERRAIN.LIGHT_TERRAIN;
 
-
 	    if (fullcqgame.templateType == RANDOM_TEMPLATE.TEMPLATE_RING &&
 	        fullcqgame.numSystems % fullcqgame.activeSlots != 0) {
 		    throw new Exception($"Number of systems must be a multiple of the number of players. Players: {fullcqgame.activeSlots}, Systems: {fullcqgame.numSystems}");
@@ -143,10 +142,15 @@ class Program {
 	    if (fullcqgame.templateType == RANDOM_TEMPLATE.TEMPLATE_STAR && (fullcqgame.numSystems - 1) % fullcqgame.activeSlots != 0) {
 		    throw new Exception($"Number of systems must be a multiple of the number of players plus 1. Players: {fullcqgame.activeSlots}, Systems: {fullcqgame.numSystems}");
 	    }
+
+	    mapgen.MoonsEnabled = false;
+	    MapGen gen = new MapGen(mapgen, baseFieldData);
+
+	    int[] list = new int[16];
+	    var numSystems = gen.GetPosibleSystemNumbers(fullcqgame, list);
 	    
-	    Globals globals = new Globals();
-	    globals.MoonsEnabled = false;
-	    MapGen gen = new MapGen(globals, mapgen, baseFieldData);
+	    
+	    
 	    gen.GenerateMap(fullcqgame, 12345);
 	    
 	    Console.WriteLine("Map generated!");

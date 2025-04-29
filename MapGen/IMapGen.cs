@@ -1,12 +1,9 @@
 ﻿namespace MapGen;
 
-using U32 = UInt32;
-using S32 = int;
-
 public interface IMapGen {
-	public void GenerateMap(FULLCQGAME game, S32 seed);
+	public void GenerateMap(FULLCQGAME game, int seed);
 
-	public U32 GetBestSystemNumber(FULLCQGAME game, U32 approxNumber);
+	public uint GetBestSystemNumber(FULLCQGAME game, uint approxNumber);
 
-	public U32 GetPosibleSystemNumbers(FULLCQGAME game, List<U32> list);
+	public int GetPosibleSystemNumbers(FULLCQGAME game, int[] list);
 }

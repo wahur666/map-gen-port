@@ -63,7 +63,7 @@ public enum TEAM
     _4
 }
 
-public struct SLOT
+public class Slot
 {
     public TYPE type;
     public COMP_CHALANGE compChalange;
@@ -152,7 +152,7 @@ public class OPTIONS
     public  bool regenOn = false;
     public  bool spectatorsOn = false;
     public  bool lockDiplomacyOn = false;
-    public  uint numSystems;
+    public  int numSystems;
     public  MONEY money;
     public  MAPTYPE mapType;
     public  RANDOM_TEMPLATE templateType;
@@ -169,9 +169,11 @@ public class CQGAME : OPTIONS
     public const int MAPNAMESIZE = 128;
     public static readonly int MAX_PLAYERS = 8;
 
-    public uint activeSlots = 1; // valid from 1 to MAX_PLAYERS // 		U32 activeSlots:8;		
-    public bool bHostBusy = false; // host is not on the final screen // 		U32 bHostBusy:1
-    public bool startCountdown = false; // 		U32 startCountdown:4;	
-
-    public SLOT[] slot = new SLOT[MAX_PLAYERS];
+    public List<Slot> Slots = [];
+    
+    public int ActiveSlots {
+	    get {
+		    return Slots.Count(slot => slot.state is STATE.READY or STATE.ACTIVE);
+	    }
+    }
 }

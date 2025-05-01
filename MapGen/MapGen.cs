@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace MapGen;
 
-public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) : IMapGen {
+public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) {
 	private BT_MAP_GEN _mapGen = mapgen;
 	private int[] mapGenMacroX = [-2, 0, 2, 2, 2, 0, -2, -2, -1, 1, 2, 2, 1, -1, -2, -2];
 	private int[] mapGenMacroY = [-2, -2, -2, 0, 2, 2, 2, 0, -2, -2, -1, 1, 2, 2, 1, -1];
@@ -55,113 +55,65 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) : IM
 		Console.WriteLine("}");
 	}
 
-	public uint GetBestSystemNumber(FULLCQGAME game, uint approxNumber) {
-		uint numPlayers = 0;
-
-		uint[] assignments = new uint[CQGAME.MAX_PLAYERS + 1];
-		memset<uint>(assignments, 0, assignments.Length);
-		for (int i = 0; i < (int)game.activeSlots; ++i) {
-			if ((game.slot[i].state == STATE.READY) || (game.slot[i].state == STATE.ACTIVE))
-				assignments[(int)game.slot[i].color] = 1;
+	public int GetBestSystemNumber(FULLCQGAME game, int approxNumber) {
+		int numPlayers = game.Slots.Count(slot => slot.state is STATE.READY or STATE.ACTIVE);
+		if (game.templateType is RANDOM_TEMPLATE.TEMPLATE_RANDOM or RANDOM_TEMPLATE.TEMPLATE_NEW_RANDOM) {
+			return Math.Max(numPlayers, approxNumber);
 		}
 
-		for (int i = 1; i <= CQGAME.MAX_PLAYERS; i++)
-			numPlayers += assignments[i];
-
-		if (game.templateType == RANDOM_TEMPLATE.TEMPLATE_RANDOM ||
-		    game.templateType == RANDOM_TEMPLATE.TEMPLATE_NEW_RANDOM) {
-			return Math.Max(numPlayers, approxNumber);
-		} else if (game.templateType == RANDOM_TEMPLATE.TEMPLATE_RING) {
+		if (game.templateType == RANDOM_TEMPLATE.TEMPLATE_RING) {
 			return Math.Max(numPlayers * (approxNumber / numPlayers), numPlayers);
-		} else if (game.templateType == RANDOM_TEMPLATE.TEMPLATE_STAR) {
+		}
+
+		if (game.templateType == RANDOM_TEMPLATE.TEMPLATE_STAR) {
 			if (numPlayers < 6) {
-				for (uint i = 3; i > 0; --i) {
-					uint number = 1 + (i * numPlayers);
+				for (int i = 3; i > 0; --i) {
+					int number = 1 + (i * numPlayers);
 					if (number <= approxNumber)
 						return number;
 				}
 
 				return 1 + numPlayers;
-			} else if (numPlayers < 8) {
-				for (uint i = 2; i > 0; --i) {
-					uint number = 1 + (i * numPlayers);
-					if (number <= approxNumber)
-						return number;
-				}
-
-				return 1 + numPlayers;
-			} else {
-				return 9;
 			}
+
+			if (numPlayers < 8) {
+				for (int i = 2; i > 0; --i) {
+					int number = 1 + (i * numPlayers);
+					if (number <= approxNumber)
+						return number;
+				}
+
+				return 1 + numPlayers;
+			}
+
+			return 9;
 		}
 
 		return approxNumber;
 	}
 
-	private static void memset<T>(T[] arr, T value, int length) {
-		for (int i = 0; i < length; i++) {
-			arr[i] = value;
-		}
+	IEnumerable<int> Range(int start, int end, int step = 1) {
+		for (int i = start; step > 0 ? i < end : i > end; i += step)
+			yield return i;
 	}
 
-	public int GetPosibleSystemNumbers(FULLCQGAME game, int[] list) {
-		int numPlayers = 0;
 
-		int[] assignments = new int[MapGenUtils.MAX_PLAYERS + 1];
-		memset(assignments, 0, assignments.Length);
-		int i;
-		for (i = 0; i < game.activeSlots; ++i) {
-			if ((game.slot[i].state == STATE.READY) || (game.slot[i].state == STATE.ACTIVE))
-				assignments[(int)game.slot[i].color] = 1;
-		}
-
-		for (i = 1; i <= MapGenUtils.MAX_PLAYERS; i++)
-			numPlayers += assignments[i];
-
-		if (game.templateType == RANDOM_TEMPLATE.TEMPLATE_RANDOM ||
-		    game.templateType == RANDOM_TEMPLATE.TEMPLATE_NEW_RANDOM) {
-			int count = numPlayers;
-			for (i = 0; i < MapGenUtils.MAX_SYSTEMS; ++i) {
-				list[i] = count;
-				++count;
-				if (count > MapGenUtils.MAX_SYSTEMS) {
-					return i + 1;
-				}
-			}
-
-			return MapGenUtils.MAX_SYSTEMS;
-		} else if (game.templateType == RANDOM_TEMPLATE.TEMPLATE_RING) {
-			for (i = 0; i < MapGenUtils.MAX_SYSTEMS; ++i) {
-				list[i] = (i + 1) * numPlayers;
-				if (list[i] > MapGenUtils.MAX_SYSTEMS) {
-					return i;
-				}
-			}
-
-			return MapGenUtils.MAX_SYSTEMS;
-		} else if (game.templateType == RANDOM_TEMPLATE.TEMPLATE_STAR) {
-			for (i = 0; i < 3; ++i) {
-				list[i] = 1 + ((i + 1) * numPlayers);
-				if (list[i] > MapGenUtils.MAX_SYSTEMS) {
-					return i;
-				}
-			}
-
-			return 3;
-		}
-
-		return 1;
+	public List<int> GetPossibleSystemNumbers(FULLCQGAME game) {
+		int numPlayers = game.ActiveSlots;
+		return game.templateType switch {
+			RANDOM_TEMPLATE.TEMPLATE_RANDOM => Range(numPlayers, MapGenUtils.MAX_SYSTEMS + 1).ToList(),
+			RANDOM_TEMPLATE.TEMPLATE_NEW_RANDOM => Range(numPlayers, MapGenUtils.MAX_SYSTEMS + 1).ToList(),
+			RANDOM_TEMPLATE.TEMPLATE_RING => Range(numPlayers, MapGenUtils.MAX_SYSTEMS + 1, numPlayers).ToList(),
+			RANDOM_TEMPLATE.TEMPLATE_STAR => Range(1 + numPlayers, MapGenUtils.MAX_SYSTEMS + 1, numPlayers).ToList(),
+			_ => []
+		};
 	}
 
 	//map gen stuff
 
 	void initMap(MapGenUtils.GenStruct map, FULLCQGAME game) {
-		BT_MAP_GEN data = _mapGen;
-		int i;
-		for (i = 0; i < 17; ++i) {
-			map.sectorGrid[i] = 0;
-		}
-
+		map.data = _mapGen;
+		map.numPlayers = game.Slots.Count(slot => slot.state == STATE.READY);
 		map.sectorLayout = game.templateType switch {
 			RANDOM_TEMPLATE.TEMPLATE_RANDOM => DMapGen.SECTOR_FORMATION.SF_RANDOM,
 			RANDOM_TEMPLATE.TEMPLATE_NEW_RANDOM => DMapGen.SECTOR_FORMATION.SF_MULTI_RANDOM,
@@ -169,23 +121,6 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) : IM
 			RANDOM_TEMPLATE.TEMPLATE_STAR => DMapGen.SECTOR_FORMATION.SF_STAR,
 			_ => map.sectorLayout
 		};
-
-		map.data = data;
-
-		map.systemCount = 0;
-		map.numJumpGates = 0;
-
-		map.numPlayers = 0;
-
-		int[] assignments = new int[CQGAME.MAX_PLAYERS + 1];
-		memset(assignments, 0, assignments.Length);
-		for (i = 0; i < game.activeSlots; ++i) {
-			if (game.slot[i].state == STATE.READY)
-				assignments[(int)game.slot[i].color] = 1;
-		}
-
-		for (i = 1; i <= CQGAME.MAX_PLAYERS; i++)
-			map.numPlayers += assignments[i];
 
 		map.gameSize = game.mapSize switch {
 			MAPSIZE.SMALL_MAP => 0,
@@ -337,7 +272,7 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) : IM
 		map.systemCount++;
 
 		//create trees
-		uint systemsPerPlayer = (map.systemsToMake - 1) / (uint)map.numPlayers;
+		int systemsPerPlayer = (map.systemsToMake - 1) / map.numPlayers;
 		uint treeUsed = 0;
 		for (int i = 0; i < map.numPlayers; ++i) {
 			int tree;
@@ -1529,8 +1464,8 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) : IM
 	}
 
 	void createStarGates(MapGenUtils.GenStruct map) {
-		for (uint i = 0; i < map.numPlayers; ++i) {
-			uint systemsPerPlayer = (map.systemsToMake - 1) / (uint)map.numPlayers;
+		for (int i = 0; i < map.numPlayers; ++i) {
+			int systemsPerPlayer = (map.systemsToMake - 1) / map.numPlayers;
 			createJumpgatesForIndexs(map, 0, 1 + (i * systemsPerPlayer));
 			if (systemsPerPlayer > 1) {
 				createJumpgatesForIndexs(map, 1 + (i * systemsPerPlayer), 2 + (i * systemsPerPlayer));
@@ -1542,7 +1477,7 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) : IM
 		}
 	}
 
-	void createJumpgatesForIndexs(MapGenUtils.GenStruct map, uint index1, uint index2) {
+	void createJumpgatesForIndexs(MapGenUtils.GenStruct map, int index1, int index2) {
 		for (uint i = 0; i < map.numJumpGates; ++i) {
 			MapGenUtils.GenJumpgate jumpgate = (map.jumpgate[i]);
 			if ((index1 == jumpgate.system1.index && index2 == jumpgate.system2.index) ||

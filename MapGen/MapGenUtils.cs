@@ -152,7 +152,7 @@ public static class MapGenUtils {
 		public uint[] sectorGrid = new uint[17]; //17 hight, use a shift to get the width.
 		public uint gameSize = 0;
 		public DMapGen.SECTOR_FORMATION sectorLayout = DMapGen.SECTOR_FORMATION.SF_RANDOM;
-		public uint systemsToMake = 0;
+		public int systemsToMake = 0;
 		public byte terrainSize = 0;
 		public GenSystem[] systems = new GenSystem[MAX_SYSTEMS];
 		public int systemCount = 0;

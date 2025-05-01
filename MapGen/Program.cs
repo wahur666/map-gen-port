@@ -95,31 +95,42 @@ class Program {
 	    ];
 	    
 	    FULLCQGAME fullcqgame = new FULLCQGAME();
-	    fullcqgame.activeSlots = 2;
 	    
-	    fullcqgame.slot[0].type = TYPE.HUMAN;
-	    fullcqgame.slot[0].compChalange = COMP_CHALANGE.AVERAGE_CH;
-	    fullcqgame.slot[0].state = STATE.READY;
-	    fullcqgame.slot[0].race = RACE.TERRAN;
-	    fullcqgame.slot[0].color = COLOR.YELLOW;
-	    fullcqgame.slot[0].team = TEAM.NOTEAM;
-	    fullcqgame.slot[0].dpid = 12345;
+	    var slot1 = new Slot {
+		    type = TYPE.HUMAN,
+		    compChalange = COMP_CHALANGE.AVERAGE_CH,
+		    state = STATE.READY,
+		    race = RACE.TERRAN,
+		    color = COLOR.YELLOW,
+		    team = TEAM.NOTEAM,
+		    dpid = 12345
+	    };
 	    
-	    fullcqgame.slot[1].type = TYPE.COMPUTER;
-	    fullcqgame.slot[1].compChalange = COMP_CHALANGE.HARD_CH;
-	    fullcqgame.slot[1].state = STATE.READY;
-	    fullcqgame.slot[1].race = RACE.MANTIS;
-	    fullcqgame.slot[1].color = COLOR.RED;
-	    fullcqgame.slot[1].team = TEAM.NOTEAM;
-	    fullcqgame.slot[1].dpid = 0;
+	    fullcqgame.Slots.Add(slot1);
 
-	    fullcqgame.slot[2].type = TYPE.COMPUTER;
-	    fullcqgame.slot[2].compChalange = COMP_CHALANGE.EASY_CH;
-	    fullcqgame.slot[2].state = STATE.READY;
-	    fullcqgame.slot[2].race = RACE.SOLARIAN;
-	    fullcqgame.slot[2].color = COLOR.BLUE;
-	    fullcqgame.slot[2].team = TEAM.NOTEAM;
-	    fullcqgame.slot[2].dpid = 0;
+	    var slot2 = new Slot {
+		    type = TYPE.COMPUTER,
+		    compChalange = COMP_CHALANGE.HARD_CH,
+		    state = STATE.READY,
+		    race = RACE.MANTIS,
+		    color = COLOR.RED,
+		    team = TEAM.NOTEAM,
+		    dpid = 0
+	    };
+	    
+	    fullcqgame.Slots.Add(slot2);
+
+	    var slot3 = new Slot();
+	    
+	    slot3.type = TYPE.COMPUTER;
+	    slot3.compChalange = COMP_CHALANGE.EASY_CH;
+	    slot3.state = STATE.READY;
+	    slot3.race = RACE.SOLARIAN;
+	    slot3.color = COLOR.BLUE;
+	    slot3.team = TEAM.NOTEAM;
+	    slot3.dpid = 0;
+	    
+	    fullcqgame.Slots.Add(slot3);
 	    
 	    fullcqgame.szMapName = "MyCustomMap";
 	    fullcqgame.localSlot = 0;
@@ -128,26 +139,25 @@ class Program {
 	    fullcqgame.szPlayerNames[1] = "Player2";
 	    fullcqgame.szPlayerNames[2] = "Player3";
 
-	    fullcqgame.numSystems = 2;
+	    fullcqgame.numSystems = 9;
 	    fullcqgame.money = MONEY.LOW_MONEY;
 	    fullcqgame.mapType = MAPTYPE.RANDOM_MAP;
-	    fullcqgame.templateType = RANDOM_TEMPLATE.TEMPLATE_RANDOM;
+	    fullcqgame.templateType = RANDOM_TEMPLATE.TEMPLATE_RING;
 	    fullcqgame.mapSize = MAPSIZE.SMALL_MAP;
 	    fullcqgame.terrain = TERRAIN.LIGHT_TERRAIN;
 
 	    if (fullcqgame.templateType == RANDOM_TEMPLATE.TEMPLATE_RING &&
-	        fullcqgame.numSystems % fullcqgame.activeSlots != 0) {
-		    throw new Exception($"Number of systems must be a multiple of the number of players. Players: {fullcqgame.activeSlots}, Systems: {fullcqgame.numSystems}");
+	        fullcqgame.numSystems % fullcqgame.ActiveSlots != 0) {
+		    throw new Exception($"Number of systems must be a multiple of the number of players. Players: {fullcqgame.ActiveSlots}, Systems: {fullcqgame.numSystems}");
 	    } 
-	    if (fullcqgame.templateType == RANDOM_TEMPLATE.TEMPLATE_STAR && (fullcqgame.numSystems - 1) % fullcqgame.activeSlots != 0) {
-		    throw new Exception($"Number of systems must be a multiple of the number of players plus 1. Players: {fullcqgame.activeSlots}, Systems: {fullcqgame.numSystems}");
+	    if (fullcqgame.templateType == RANDOM_TEMPLATE.TEMPLATE_STAR && (fullcqgame.numSystems - 1) % fullcqgame.ActiveSlots != 0) {
+		    throw new Exception($"Number of systems must be a multiple of the number of players plus 1. Players: {fullcqgame.ActiveSlots}, Systems: {fullcqgame.numSystems}");
 	    }
 
 	    mapgen.MoonsEnabled = false;
 	    MapGen gen = new MapGen(mapgen, baseFieldData);
 
-	    int[] list = new int[16];
-	    var numSystems = gen.GetPosibleSystemNumbers(fullcqgame, list);
+	    var numSystems = gen.GetPossibleSystemNumbers(fullcqgame);
 	    
 	    
 	    

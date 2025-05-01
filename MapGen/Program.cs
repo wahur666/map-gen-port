@@ -69,34 +69,34 @@ class Program {
 		*/
 	    
 	    List<BASE_FIELD_DATA> baseFieldData = [
-			new BASE_FIELD_DATA("ANTIMATTER!!Antimatter", ObjClass.OC_FIELD, FIELDCLASS.FC_ANTIMATTER),
-			new BASE_FIELD_DATA("ANTIMATTER!!mantis", ObjClass.OC_FIELD, FIELDCLASS.FC_ANTIMATTER),
-			new BASE_FIELD_DATA("ANTIMATTER!!solarian", ObjClass.OC_FIELD, FIELDCLASS.FC_ANTIMATTER),
-			new BASE_FIELD_DATA("ANTIMATTER!!terran", ObjClass.OC_FIELD, FIELDCLASS.FC_ANTIMATTER),
-			new BASE_FIELD_DATA("Field!!AsteroidsHeavy", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
-			new BASE_FIELD_DATA("Field!!AsteroidsLight", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
-			new BASE_FIELD_DATA("Field!!AsteroidsMed", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
-			new BASE_FIELD_DATA("Field!!Debris", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
-			new BASE_FIELD_DATA("Nebula!!Antimatter", ObjClass.OC_NEBULA, FIELDCLASS.FC_ANTIMATTER),
-			new BASE_FIELD_DATA("Nebula!!Antimatter(mantis)", ObjClass.OC_NEBULA, FIELDCLASS.FC_ANTIMATTER),
-			new BASE_FIELD_DATA("Nebula!!Antimatter(solarian)", ObjClass.OC_NEBULA, FIELDCLASS.FC_ANTIMATTER),
-			new BASE_FIELD_DATA("Nebula!!Antimatter(terran)", ObjClass.OC_NEBULA, FIELDCLASS.FC_ANTIMATTER),
-			new BASE_FIELD_DATA("Nebula!!Celsius(terran)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
-			new BASE_FIELD_DATA("Nebula!!Cygnus(solarian)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
-			new BASE_FIELD_DATA("Nebula!!Helious(terran)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
-			new BASE_FIELD_DATA("Nebula!!Hyades(mantis)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
-			new BASE_FIELD_DATA("Nebula!!Ion(solarian)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
-			new BASE_FIELD_DATA("Nebula!!Lithium(mantis)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
-			new BASE_FIELD_DATA("BlackHole", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
-			new BASE_FIELD_DATA("BlueStar", ObjClass.OC_BLACKHOLE, FIELDCLASS.FC_OTHER),
-			new BASE_FIELD_DATA("GreenStar", ObjClass.OC_BLACKHOLE, FIELDCLASS.FC_OTHER),
-			new BASE_FIELD_DATA("RedStar", ObjClass.OC_BLACKHOLE, FIELDCLASS.FC_OTHER),
-			new BASE_FIELD_DATA("YellowStar", ObjClass.OC_BLACKHOLE, FIELDCLASS.FC_OTHER),
+			new ("ANTIMATTER!!Antimatter", ObjClass.OC_FIELD, FIELDCLASS.FC_ANTIMATTER),
+			new ("ANTIMATTER!!mantis", ObjClass.OC_FIELD, FIELDCLASS.FC_ANTIMATTER),
+			new ("ANTIMATTER!!solarian", ObjClass.OC_FIELD, FIELDCLASS.FC_ANTIMATTER),
+			new ("ANTIMATTER!!terran", ObjClass.OC_FIELD, FIELDCLASS.FC_ANTIMATTER),
+			new ("Field!!AsteroidsHeavy", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
+			new ("Field!!AsteroidsLight", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
+			new ("Field!!AsteroidsMed", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
+			new ("Field!!Debris", ObjClass.OC_FIELD, FIELDCLASS.FC_ASTEROIDFIELD),
+			new ("Nebula!!Antimatter", ObjClass.OC_NEBULA, FIELDCLASS.FC_ANTIMATTER),
+			new ("Nebula!!Antimatter(mantis)", ObjClass.OC_NEBULA, FIELDCLASS.FC_ANTIMATTER),
+			new ("Nebula!!Antimatter(solarian)", ObjClass.OC_NEBULA, FIELDCLASS.FC_ANTIMATTER),
+			new ("Nebula!!Antimatter(terran)", ObjClass.OC_NEBULA, FIELDCLASS.FC_ANTIMATTER),
+			new ("Nebula!!Celsius(terran)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new ("Nebula!!Cygnus(solarian)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new ("Nebula!!Helious(terran)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new ("Nebula!!Hyades(mantis)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new ("Nebula!!Ion(solarian)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new ("Nebula!!Lithium(mantis)", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new ("BlackHole", ObjClass.OC_NEBULA, FIELDCLASS.FC_NEBULA),
+			new ("BlueStar", ObjClass.OC_BLACKHOLE, FIELDCLASS.FC_OTHER),
+			new ("GreenStar", ObjClass.OC_BLACKHOLE, FIELDCLASS.FC_OTHER),
+			new ("RedStar", ObjClass.OC_BLACKHOLE, FIELDCLASS.FC_OTHER),
+			new ("YellowStar", ObjClass.OC_BLACKHOLE, FIELDCLASS.FC_OTHER),
 	    ];
 	    
 	    FULLCQGAME fullcqgame = new FULLCQGAME();
 	    
-	    var slot1 = new Slot {
+	    fullcqgame.Slots.Add(new Slot {
 		    type = TYPE.HUMAN,
 		    compChalange = COMP_CHALANGE.AVERAGE_CH,
 		    state = STATE.READY,
@@ -104,11 +104,9 @@ class Program {
 		    color = COLOR.YELLOW,
 		    team = TEAM.NOTEAM,
 		    dpid = 12345
-	    };
+	    });
 	    
-	    fullcqgame.Slots.Add(slot1);
-
-	    var slot2 = new Slot {
+	    fullcqgame.Slots.Add(new Slot {
 		    type = TYPE.COMPUTER,
 		    compChalange = COMP_CHALANGE.HARD_CH,
 		    state = STATE.READY,
@@ -116,21 +114,17 @@ class Program {
 		    color = COLOR.RED,
 		    team = TEAM.NOTEAM,
 		    dpid = 0
-	    };
-	    
-	    fullcqgame.Slots.Add(slot2);
+	    });
 
-	    var slot3 = new Slot();
-	    
-	    slot3.type = TYPE.COMPUTER;
-	    slot3.compChalange = COMP_CHALANGE.EASY_CH;
-	    slot3.state = STATE.READY;
-	    slot3.race = RACE.SOLARIAN;
-	    slot3.color = COLOR.BLUE;
-	    slot3.team = TEAM.NOTEAM;
-	    slot3.dpid = 0;
-	    
-	    fullcqgame.Slots.Add(slot3);
+	    fullcqgame.Slots.Add(new Slot {
+		    type = TYPE.COMPUTER,
+		    compChalange = COMP_CHALANGE.EASY_CH,
+		    state = STATE.READY,
+		    race = RACE.SOLARIAN,
+		    color = COLOR.BLUE,
+		    team = TEAM.NOTEAM,
+		    dpid = 0
+	    });
 	    
 	    fullcqgame.szMapName = "MyCustomMap";
 	    fullcqgame.localSlot = 0;
@@ -157,11 +151,10 @@ class Program {
 	    mapgen.MoonsEnabled = false;
 	    MapGen gen = new MapGen(mapgen, baseFieldData);
 
-	    var numSystems = gen.GetPossibleSystemNumbers(fullcqgame);
-	    
-	    
+	    var numSystems = MapGen.GetPossibleSystemNumbers(fullcqgame);
 	    
 	    gen.GenerateMap(fullcqgame, 12345);
+	    
 	    
 	    Console.WriteLine("Map generated!");
     }

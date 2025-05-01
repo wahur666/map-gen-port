@@ -9,10 +9,7 @@ public static class DMapGen {
 
 	public enum PLACEMENT {
 		RANDOM = 0,
-		CLUSTER,
-		PLANET_RING,
-		STREEKS,
-		SPOTS,
+		SPOTS = 4,
 	};
 
 	public enum OVERLAP {

@@ -69,7 +69,7 @@ public static class MapGenUtils {
 	public static readonly int FLAG_PATHON = 0x02;
 	public static readonly int MAX_FLAGS = 20;
 
-	public class FlagPost() {
+	public class FlagPost {
 		public int type = 0;
 		public int xPos = 0;
 		public int yPos = 0;

@@ -168,7 +168,7 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) {
 		int s1;
 
 		for (s1 = 0; s1 < map.numPlayers; s1++) {
-			map.systems[s1] = new MapGenUtils.GenSystem();
+			map.systems.Add(new MapGenUtils.GenSystem());
 			MapGenUtils.GenSystem system1 = map.systems[s1];
 			do {
 				int val = (int)GetRand(0, MapGenUtils.RND_MAX_PLAYER_SYSTEMS - 1, DMapGen.DMAP_FUNC.LINEAR);
@@ -186,7 +186,7 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) {
 		}
 
 		for (s1 = map.numPlayers; s1 < map.systemsToMake; s1++) {
-			map.systems[s1] = new MapGenUtils.GenSystem();
+			map.systems.Add(new MapGenUtils.GenSystem());
 			MapGenUtils.GenSystem system1 = map.systems[s1];
 			do {
 				uint val = GetRand(0, MapGenUtils.RND_MAX_REMOTE_SYSTEMS - 1, DMapGen.DMAP_FUNC.LINEAR);
@@ -208,7 +208,7 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) {
 		int s1;
 		uint playersPlaced = 0;
 		for (s1 = 0; s1 < map.numPlayers; ++s1) {
-			map.systems[s1] = new MapGenUtils.GenSystem();
+			map.systems.Add(new MapGenUtils.GenSystem());
 			MapGenUtils.GenSystem system1 = map.systems[s1];
 
 			int val = s1 * playerSpace;
@@ -231,7 +231,7 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) {
 		for (int i = 0; i < map.numPlayers; ++i) {
 			for (int j = 0; j < remotePicks; ++j) {
 				s1 = map.systemCount;
-				map.systems[s1] = new MapGenUtils.GenSystem();
+				map.systems.Add(new MapGenUtils.GenSystem());
 				MapGenUtils.GenSystem system1 = map.systems[s1];
 
 				do {
@@ -256,7 +256,7 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) {
 	void generateSystemsStar(MapGenUtils.GenStruct map) {
 		//create center system
 
-		map.systems[0] = new MapGenUtils.GenSystem();
+		map.systems.Add(new MapGenUtils.GenSystem());
 		MapGenUtils.GenSystem system1 = map.systems[0];
 
 		system1.sectorGridX = MapGenUtils.starCenterX;
@@ -279,7 +279,7 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) {
 
 			treeUsed |= (uint)(0x01 << tree);
 
-			map.systems[map.systemCount] = new MapGenUtils.GenSystem();
+			map.systems.Add(new MapGenUtils.GenSystem());
 			//create home system
 			system1 = map.systems[map.systemCount];
 
@@ -307,7 +307,7 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) {
 			}
 
 			if (createSys1) {
-				map.systems[map.systemCount] = new MapGenUtils.GenSystem();
+				map.systems.Add(new MapGenUtils.GenSystem());
 				system1 = map.systems[map.systemCount];
 				system1.sectorGridX = MapGenUtils.starTreeX[tree, 1];
 				system1.sectorGridY = MapGenUtils.starTreeY[tree, 1];
@@ -319,25 +319,27 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) {
 				map.systemCount++;
 			}
 
-			if (createSys2) {
-				map.systems[map.systemCount] = new MapGenUtils.GenSystem();
-				system1 = map.systems[map.systemCount];
-
-				system1.sectorGridX = MapGenUtils.starTreeX[tree, 2];
-				system1.sectorGridY = MapGenUtils.starTreeY[tree, 2];
-
-				map.sectorGrid[system1.sectorGridX] |= (uint)(0x00000001 << system1.sectorGridY);
-
-				system1.index = map.systemCount;
-
-				map.systemCount++;
+			if (!createSys2) {
+				continue;
 			}
+
+			map.systems.Add(new MapGenUtils.GenSystem());
+			system1 = map.systems[map.systemCount];
+
+			system1.sectorGridX = MapGenUtils.starTreeX[tree, 2];
+			system1.sectorGridY = MapGenUtils.starTreeY[tree, 2];
+
+			map.sectorGrid[system1.sectorGridX] |= (uint)(0x00000001 << system1.sectorGridY);
+
+			system1.index = map.systemCount;
+
+			map.systemCount++;
 		}
 	}
 
 	bool SystemsOverlap(MapGenUtils.GenStruct map, MapGenUtils.GenSystem system) {
 		for (uint count = 0; count < map.systemCount; ++count) {
-			if ((((int)(map.sectorGrid[system.sectorGridX]) >> (int)system.sectorGridY) & 0x01) > 0)
+			if ((((int)(map.sectorGrid[system.sectorGridX]) >> system.sectorGridY) & 0x01) > 0)
 				return true;
 		}
 
@@ -366,19 +368,21 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) {
 				bool findSuccess = FindPosition(sys1, 3, DMapGen.OVERLAP.NO_OVERLAP, ref jx1, ref jy1);
 				CQASSERT(findSuccess, "Full System could not place jumpgate");
 				break;
-			} else {
-				if (jx1 < (uint)cSize)
-					++jx1;
-				else if (jx1 > (uint)cSize)
-					--jx1;
 			}
 
-			if (!SpaceEmpty(sys1, jx1, jy1, DMapGen.OVERLAP.NO_OVERLAP, 3)) {
-				if (jy1 < (uint)cSize)
-					++jy1;
-				else if (jy1 > (uint)cSize)
-					--jy1;
+			if (jx1 < (uint)cSize)
+				++jx1;
+			else if (jx1 > (uint)cSize)
+				--jx1;
+
+			if (SpaceEmpty(sys1, jx1, jy1, DMapGen.OVERLAP.NO_OVERLAP, 3)) {
+				continue;
 			}
+
+			if (jy1 < (uint)cSize)
+				++jy1;
+			else if (jy1 > (uint)cSize)
+				--jy1;
 		}
 
 		cSize = (int)sys2.size / 2;
@@ -415,8 +419,6 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) {
 	bool CrossesAnotherSystem(MapGenUtils.GenStruct map, MapGenUtils.GenSystem sys1,
 		MapGenUtils.GenSystem sys2,
 		int jx1, int jy1, int jx2, int jy2) {
-		uint s;
-
 		MapGenUtils.GenSystem sys;
 
 		int halfSystemSize = MapGenUtils.MAX_MAP_SIZE / 2;
@@ -425,9 +427,9 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) {
 		jy1 = jy1 * 2 * MapGenUtils.MAX_MAP_SIZE + halfSystemSize;
 		jx2 = jx2 * 2 * MapGenUtils.MAX_MAP_SIZE + halfSystemSize;
 		jy2 = jy2 * 2 * MapGenUtils.MAX_MAP_SIZE + halfSystemSize;
-		for (s = 0; s < map.systemCount; s++) {
+		for (int s = 0; s < map.systemCount; s++) {
 			if (s != sys1.index && s != sys2.index) {
-				sys = (map.systems[s]);
+				sys = map.systems[s];
 
 				if (LinesCross(jx1, jy1, jx2, jy2,
 					    sys.sectorGridX * 2 * MapGenUtils.MAX_MAP_SIZE, sys.sectorGridY * 2 * MapGenUtils.MAX_MAP_SIZE,
@@ -510,7 +512,7 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) {
 			}
 		}
 
-		for (uint s1 = 0; s1 < map.systemCount; s1++) {
+		for (int s1 = 0; s1 < map.systemCount; s1++) {
 			MapGenUtils.GenSystem system = map.systems[s1];
 
 			if (system.playerID != 0) {
@@ -591,7 +593,7 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) {
 	void RunHomeMacros(MapGenUtils.GenStruct map) {
 		int xPos = 0;
 		int yPos = 0;
-		for (uint s1 = 0; s1 < map.systemCount; ++s1) {
+		for (int s1 = 0; s1 < map.systemCount; ++s1) {
 			MapGenUtils.GenSystem system = map.systems[s1];
 			if (system.playerID > 0) {
 				getMacroCenterPos(system, ref xPos, ref yPos);
@@ -789,12 +791,12 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) {
 	}
 
 	void CreateJumpgates(MapGenUtils.GenStruct map) {
-		for (uint i = 0; i < map.systemCount; ++i) {
-			MapGenUtils.GenSystem system1 = (map.systems[i]);
+		for (int i = 0; i < map.systemCount; ++i) {
+			MapGenUtils.GenSystem system1 = map.systems[i];
 			int cx1 = system1.sectorGridX;
 			int cy1 = system1.sectorGridY;
-			for (uint j = i + 1; j < map.systemCount; ++j) {
-				MapGenUtils.GenSystem system2 = (map.systems[j]);
+			for (int j = i + 1; j < map.systemCount; ++j) {
+				MapGenUtils.GenSystem system2 = map.systems[j];
 				int cx2 = system2.sectorGridX;
 				int cy2 = system2.sectorGridY;
 				if (!CrossesAnotherSystem(map, system1, system2, cx1, cy1, cx2, cy2)) {
@@ -1379,62 +1381,60 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) {
 		}
 	}
 
-	void createRandomGates(MapGenUtils.GenStruct map) {
-		throw new NotImplementedException();
-	}
-
 	void createRingGates(MapGenUtils.GenStruct map) {
-		for (uint i = 0; i < map.systemCount; ++i) {
+		for (int i = 0; i < map.systemCount; ++i) {
 			int connectVal = map.systems[i].connectionOrder;
 			int bestConnectVal = 0;
 			MapGenUtils.GenJumpgate bestJumpgate = null;
 			for (uint j = 0; j < map.numJumpGates; ++j) {
-				MapGenUtils.GenJumpgate jumpgate = (map.jumpgate[j]);
-				if (!jumpgate.created) {
-					if (jumpgate.system1.index == i) {
-						if (bestJumpgate is not null) {
-							if (connectVal < jumpgate.system2.connectionOrder) {
-								if (bestConnectVal > connectVal) {
-									if (bestConnectVal > jumpgate.system2.connectionOrder) {
-										bestJumpgate = jumpgate;
-										bestConnectVal = jumpgate.system2.connectionOrder;
-									}
-								} else {
+				MapGenUtils.GenJumpgate jumpgate = map.jumpgate[j];
+				if (jumpgate.created) {
+					continue;
+				}
+
+				if (jumpgate.system1.index == i) {
+					if (bestJumpgate is not null) {
+						if (connectVal < jumpgate.system2.connectionOrder) {
+							if (bestConnectVal > connectVal) {
+								if (bestConnectVal > jumpgate.system2.connectionOrder) {
 									bestJumpgate = jumpgate;
 									bestConnectVal = jumpgate.system2.connectionOrder;
 								}
-							} else if (bestConnectVal < connectVal) {
-								if (jumpgate.system2.connectionOrder < bestConnectVal) {
-									bestJumpgate = jumpgate;
-									bestConnectVal = jumpgate.system2.connectionOrder;
-								}
+							} else {
+								bestJumpgate = jumpgate;
+								bestConnectVal = jumpgate.system2.connectionOrder;
 							}
-						} else {
-							bestJumpgate = jumpgate;
-							bestConnectVal = jumpgate.system2.connectionOrder;
+						} else if (bestConnectVal < connectVal) {
+							if (jumpgate.system2.connectionOrder < bestConnectVal) {
+								bestJumpgate = jumpgate;
+								bestConnectVal = jumpgate.system2.connectionOrder;
+							}
 						}
-					} else if (jumpgate.system2.index == i) {
-						if (bestJumpgate is not null) {
-							if (connectVal < jumpgate.system1.connectionOrder) {
-								if (bestConnectVal > connectVal) {
-									if (bestConnectVal > jumpgate.system1.connectionOrder) {
-										bestJumpgate = jumpgate;
-										bestConnectVal = jumpgate.system1.connectionOrder;
-									}
-								} else {
+					} else {
+						bestJumpgate = jumpgate;
+						bestConnectVal = jumpgate.system2.connectionOrder;
+					}
+				} else if (jumpgate.system2.index == i) {
+					if (bestJumpgate is not null) {
+						if (connectVal < jumpgate.system1.connectionOrder) {
+							if (bestConnectVal > connectVal) {
+								if (bestConnectVal > jumpgate.system1.connectionOrder) {
 									bestJumpgate = jumpgate;
 									bestConnectVal = jumpgate.system1.connectionOrder;
 								}
-							} else if (bestConnectVal < connectVal) {
-								if (jumpgate.system1.connectionOrder < bestConnectVal) {
-									bestJumpgate = jumpgate;
-									bestConnectVal = jumpgate.system1.connectionOrder;
-								}
+							} else {
+								bestJumpgate = jumpgate;
+								bestConnectVal = jumpgate.system1.connectionOrder;
 							}
-						} else {
-							bestJumpgate = jumpgate;
-							bestConnectVal = jumpgate.system1.connectionOrder;
+						} else if (bestConnectVal < connectVal) {
+							if (jumpgate.system1.connectionOrder < bestConnectVal) {
+								bestJumpgate = jumpgate;
+								bestConnectVal = jumpgate.system1.connectionOrder;
+							}
 						}
+					} else {
+						bestJumpgate = jumpgate;
+						bestConnectVal = jumpgate.system1.connectionOrder;
 					}
 				}
 			}
@@ -1450,22 +1450,23 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) {
 	void createStarGates(MapGenUtils.GenStruct map) {
 		for (int i = 0; i < map.numPlayers; ++i) {
 			int systemsPerPlayer = (map.systemsToMake - 1) / map.numPlayers;
-			createJumpgatesForIndexs(map, 0, 1 + (i * systemsPerPlayer));
+			CreateJumpgatesForIndexes(map, 0, 1 + (i * systemsPerPlayer));
 			if (systemsPerPlayer > 1) {
-				createJumpgatesForIndexs(map, 1 + (i * systemsPerPlayer), 2 + (i * systemsPerPlayer));
+				CreateJumpgatesForIndexes(map, 1 + (i * systemsPerPlayer), 2 + (i * systemsPerPlayer));
 			}
 
 			if (systemsPerPlayer > 2) {
-				createJumpgatesForIndexs(map, 1 + (i * systemsPerPlayer), 3 + (i * systemsPerPlayer));
+				CreateJumpgatesForIndexes(map, 1 + (i * systemsPerPlayer), 3 + (i * systemsPerPlayer));
 			}
 		}
 	}
 
-	void createJumpgatesForIndexs(MapGenUtils.GenStruct map, int index1, int index2) {
-		for (uint i = 0; i < map.numJumpGates; ++i) {
-			MapGenUtils.GenJumpgate jumpgate = (map.jumpgate[i]);
-			if ((index1 == jumpgate.system1.index && index2 == jumpgate.system2.index) ||
-			    (index2 == jumpgate.system1.index && index2 == jumpgate.system1.index)) {
+	private void CreateJumpgatesForIndexes(MapGenUtils.GenStruct map, int index1, int index2) {
+		for (int i = 0; i < map.numJumpGates; ++i) {
+			MapGenUtils.GenJumpgate jumpgate = map.jumpgate[i];
+			var systemIndexSame = index1 == jumpgate.system1.index && index2 == jumpgate.system2.index;
+			var systemIndexCrossed = index2 == jumpgate.system1.index && index2 == jumpgate.system1.index;
+			if (systemIndexSame || systemIndexCrossed) {
 				jumpgate.system1.jumpgates[jumpgate.system1.jumpgateCount++] = jumpgate;
 				jumpgate.system2.jumpgates[jumpgate.system2.jumpgateCount++] = jumpgate;
 				jumpgate.created = true;

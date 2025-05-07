@@ -111,8 +111,6 @@ public static class MapGenUtils {
 		}
 		
 		public void initObjectMap() {
-			omUsed = 0;
-			omStartEmpty = 0;
 			int centerDist = (int)(size / 2);
 			int centerBoarder = centerDist - 1;
 			int centerBoarder2 = centerBoarder * centerBoarder;
@@ -133,7 +131,7 @@ public static class MapGenUtils {
 		}
 	}
 
-	public class GenJumpgate() {
+	public class GenJumpgate {
 		public GenSystem system1 = new();
 		public GenSystem system2 = new();
 
@@ -154,7 +152,7 @@ public static class MapGenUtils {
 		public DMapGen.SECTOR_FORMATION sectorLayout = DMapGen.SECTOR_FORMATION.SF_RANDOM;
 		public int systemsToMake = 0;
 		public byte terrainSize = 0;
-		public GenSystem[] systems = new GenSystem[MAX_SYSTEMS];
+		public List<GenSystem> systems = new ();
 		public int systemCount = 0;
 		public GenJumpgate[] jumpgate = new GenJumpgate[MAX_SYSTEMS * MAX_SYSTEMS];
 		public uint numJumpGates = 0;

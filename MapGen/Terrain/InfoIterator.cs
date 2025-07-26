@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace MapGen;
+namespace MapGen.Terrain;
 
 public class InfoIterator : IEnumerator<FootprintInfo> {
 	private BlockAllocator<FootprintInfo>.SubNode _node;

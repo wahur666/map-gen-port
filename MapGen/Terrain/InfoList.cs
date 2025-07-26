@@ -1,4 +1,4 @@
-﻿namespace MapGen;
+﻿namespace MapGen.Terrain;
 
 public class InfoList<T> {
 	public BlockAllocator<FootprintInfo>.SubNode List = null;
@@ -20,7 +20,7 @@ public class InfoList<T> {
 	}
 
 	public void Add(BlockAllocator<FootprintInfo>.SubNode data) {
-		BlockAllocator<FootprintInfo>.SubNode node = TerrainMap._blockAllocator.alloc();
+		BlockAllocator<FootprintInfo>.SubNode node = TerrainMap._blockAllocator.Alloc();
 
 		node = data;
 

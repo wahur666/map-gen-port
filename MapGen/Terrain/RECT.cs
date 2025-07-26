@@ -1,4 +1,4 @@
-﻿namespace MapGen;
+﻿namespace MapGen.Terrain;
 
 public class RECT {
 	public long left;

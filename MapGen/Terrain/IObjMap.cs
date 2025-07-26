@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace MapGen;
+namespace MapGen.Terrain;
 
 public interface IObjMap {
 	public ObjMapNode AddObjectToMap(object obj, uint systemId, int squareId, uint flags);

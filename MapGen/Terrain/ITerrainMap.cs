@@ -1,4 +1,4 @@
-﻿namespace MapGen;
+﻿namespace MapGen.Terrain;
 
 public interface ITerrainMap {
 	public void SetWorldRect(RECT worldRect);

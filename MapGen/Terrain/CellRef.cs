@@ -1,4 +1,4 @@
-﻿namespace MapGen;
+﻿namespace MapGen.Terrain;
 
 public class CellRef(int x, int y) : IEquatable<CellRef> {
 

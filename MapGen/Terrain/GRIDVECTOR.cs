@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 
-namespace MapGen;
+namespace MapGen.Terrain;
 
 public class GRIDVECTOR : IEquatable<GRIDVECTOR> {
 	public static int GRIDSIZE = 4096;

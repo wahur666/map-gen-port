@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace MapGen;
+namespace MapGen.Terrain;
 
 public class InfoIteratorEnumerable : IEnumerable<FootprintInfo>
 {

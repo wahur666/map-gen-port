@@ -1,4 +1,4 @@
-﻿namespace MapGen;
+﻿namespace MapGen.Terrain;
 
 public class FootprintInfo {
 	public uint Flags = 0;

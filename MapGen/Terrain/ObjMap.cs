@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace MapGen;
+namespace MapGen.Terrain;
 
 public class ObjMap: IObjMap {
 	public static int GRIDSIZE = 4096;

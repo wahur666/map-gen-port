@@ -1,4 +1,4 @@
-﻿namespace MapGen;
+﻿namespace MapGen.Terrain;
 
 public class TerrainMap {
 	public const int MAX_MAP_SIZE = 64;
@@ -14,7 +14,7 @@ public class TerrainMap {
 	public static readonly BlockAllocator<FootprintInfo> _blockAllocator = new();
 
 	private void ResetTerrainBlockAllocator() {
-		_blockAllocator.reset();
+		_blockAllocator.Reset();
 	}
 
 }

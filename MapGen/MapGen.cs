@@ -11,7 +11,7 @@ public class MapGen(BT_MAP_GEN mapgen, List<BASE_FIELD_DATA> baseFieldData) {
 	private List<BASE_FIELD_DATA> _baseFieldData = baseFieldData;
 	private MapGenUtils.GenStruct _map;
 
-	private static void CQASSERT(bool expression, string message = "") {
+	public static void CQASSERT(bool expression, string message = "") {
 		if (expression) {
 			return;
 		}
